@@ -1,0 +1,3 @@
+#!/bin/bash
+ps -ef | grep seckms-xkip-1.0.0.jar | grep java | grep -v grep | awk '{print $2}' | xargs kill -9
+echo seckms-xkip stoped...

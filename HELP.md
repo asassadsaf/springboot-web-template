@@ -1,0 +1,11 @@
+程序部署目录结构
+root_path
+  --scripts
+  --config
+    --policy
+    --shell
+    --template
+  --logs
+    --sys
+    --operation
+  --seckms-xkip-1.0.0.jar

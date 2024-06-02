@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="error" monitorInterval="30">
+    <Properties>
+        <Property name="pattern">[%date{yyyy-MM-dd HH:mm:ss}] [%-5level] [%thread] [%logger:%line]--%mdc{client} %msg%n</Property>
+        <Property name="pattern_operation">[%date{yyyy-MM-dd HH:mm:ss}] %msg%n</Property>
+        <Property name="sys_log_name">server-sys.log</Property>
+<!--        sys:xxx代表从JVM系统参数中取值-->
+        <Property name="sys_log_home">${sys:application.path}/logs/sys</Property>
+        <Property name="operation_log_name">server-operation.log</Property>
+        <Property name="operation_log_home">${sys:application.path}/logs/operation</Property>
+        <Property name="max_size">100M</Property>
+        <Property name="max_num">7</Property>
+    </Properties>
+    <appenders>
+        <!--console：控制台输出的配置-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+        <!--按照一定规则拆分的日志文件的 appender-->
+        <RollingFile name="rollingFile" fileName="${sys_log_home}/${sys_log_name}" filePattern="${sys_log_home}/${sys_log_name}-%d{yyyy-MM-dd}-%i">
+            <!--日志消息格式-->
+            <PatternLayout pattern="${pattern}" />
+            <Policies>
+                <!--在系统启动时，出发拆分规则，生产一个新的日志文件-->
+<!--                <OnStartupTriggeringPolicy />-->
+                <!--按照文件大小拆分，100MB -->
+                <SizeBasedTriggeringPolicy size="${max_size}" />
+                <!--按照时间节点拆分，规则根据filePattern定义的%d{yyyy-MM-dd}为每天切割-->
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="${max_num}" />
+        </RollingFile>
+        <RollingFile name="rollingFileOperation" fileName="${operation_log_home}/${operation_log_name}" filePattern="${operation_log_home}/${operation_log_name}-%d{yyyy-MM-dd}-%i">
+            <!--日志消息格式-->
+            <PatternLayout pattern="${pattern_operation}" />
+            <Policies>
+                <!--在系统启动时，出发拆分规则，生产一个新的日志文件-->
+                <!--                <OnStartupTriggeringPolicy />-->
+                <!--按照文件大小拆分，100MB -->
+                <SizeBasedTriggeringPolicy size="${max_size}" />
+                <!--按照时间节点拆分，规则根据filePattern定义的%d{yyyy-MM-dd}为每天切割-->
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="${max_num}" />
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <logger name="org.springframework" level="ERROR"/>
+        <logger name="org.apache" level="ERROR"/>
+        <logger name="operationLog" level="INFO" additivity="false">
+            <appender-ref ref="rollingFileOperation"/>
+            <appender-ref ref="Console"/>
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="rollingFile"/>
+        </root>
+    </loggers>
+</configuration>

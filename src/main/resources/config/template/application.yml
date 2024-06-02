@@ -1,0 +1,4 @@
+server:
+  port: [server_port]
+remote:
+  restUrl: https://[remote_ip]:[remote_port]/test

@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: service-template
+  main:
+    #允许循环引用
+    allow-circular-references: true
+server:
+  ssl:
+    enabled: true
+    key-store-type: jks
+    key-store: classpath:rsa_server.jks
+    key-store-password: swxa@2024
+    ciphers:
+      - TLS_AES_256_GCM_SHA384
+      - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+      - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  port: 8080
+
+# ${application.path}为Jar包同级目录
+business:
+  specification: 1.0.0
+  serverName: ${spring.application.name}
+  serverVersion: ${business.specification}-RC1+buildinit
+  serverInfo: ${business.serverName}/${business.serverVersion}
+  vendor: FKP
+  shellPath:
+    getSourceIps: "${application.path}/config/shell/getSourceIps.sh"
+  policy:
+    path: "${application.path}/config/policy/policy.yml"
+remote:
+    restUrl: https://localhost:7077/test
+
+#配置log4j2配置文件路径
+logging:
+  config: "${application.path}/config/log4j2.xml"
