@@ -1,0 +1,9 @@
+curl --location 'https://localhost:8080/test/v1/system/generateCertDigest'
+
+curl --location 'https://localhost:8080/test/v1/system/queryPolicy'
+
+curl --location 'https://localhost:8080/test/v1/system/configPolicy' \
+--header 'Content-Type: application/json' \
+--data '{
+    "disableOutputFormPlain": false
+}'

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.lang3.StringUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
@@ -20,6 +21,7 @@ import org.springframework.core.io.InputStreamResource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.Security;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +46,7 @@ public class MyAppListener implements SpringApplicationRunListener {
     @Override
     public void starting(ConfigurableBootstrapContext bootstrapContext) {
         setApplicationPath();
+        loadProvider();
     }
 
     @Override
@@ -97,5 +100,11 @@ public class MyAppListener implements SpringApplicationRunListener {
         ApplicationHome applicationHome = new ApplicationHome(SpringBootWebTemplateApplication.class);
         String applicationPath = applicationHome.getDir().getAbsolutePath();
         System.setProperty("application.path", applicationPath);
+    }
+
+    private void loadProvider(){
+        if(Security.getProperty(BouncyCastleProvider.PROVIDER_NAME) == null){
+            Security.addProvider(new BouncyCastleProvider());
+        }
     }
 }
