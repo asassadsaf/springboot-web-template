@@ -21,17 +21,17 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
     @Autowired
-    private TestService keysService;
+    private TestService testService;
 
     @PostMapping(value = "/health")
     public XkiHealthResponse health(@RequestBody BaseRequest request){
-        return keysService.health(request.getRequestMetadata());
+        return testService.health(request.getRequestMetadata());
     }
 
     @PostMapping(value = "/random")
     public GenRandomResponse random(@RequestBody GenRandomRequest request){
         ValidateUtils.wrapRandomLength(request.getLength(), request.getWrappingAlgorithm());
-        return keysService.random(request);
+        return testService.random(request);
     }
 
 }

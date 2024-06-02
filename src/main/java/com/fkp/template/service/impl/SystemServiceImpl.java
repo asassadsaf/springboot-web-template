@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.Yaml;
@@ -94,8 +95,8 @@ public class SystemServiceImpl implements SystemService {
         MessageDigest digestSha256;
         MessageDigest digestSm3;
         try {
-            digestSha256 = MessageDigest.getInstance("SHA256");
-            digestSm3 = MessageDigest.getInstance("SM3");
+            digestSha256 = MessageDigest.getInstance("SHA256", BouncyCastleProvider.PROVIDER_NAME);
+            digestSm3 = MessageDigest.getInstance("SM3", BouncyCastleProvider.PROVIDER_NAME);
         }catch (Exception e){
             throw new BusinessException(ErrorCodeEnum.InternalServerError, "Generate digest get instance error.", e);
         }

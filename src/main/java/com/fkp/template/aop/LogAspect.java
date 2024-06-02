@@ -45,10 +45,12 @@ public class LogAspect {
                 if(arg instanceof BaseRequest){
                     BaseRequest request = (BaseRequest)arg;
                     RequestMetadata requestMetadata = request.getRequestMetadata();
-                    kmsRequestId = requestMetadata.getKmsRequestId();
-                    kmsInstanceId = requestMetadata.getKmsInstanceId();
-                    kmsOperation = requestMetadata.getKmsOperation();
-                    principalArn = requestMetadata.getPrincipalArn();
+                    if(requestMetadata != null){
+                        kmsRequestId = requestMetadata.getKmsRequestId();
+                        kmsInstanceId = requestMetadata.getKmsInstanceId();
+                        kmsOperation = requestMetadata.getKmsOperation();
+                        principalArn = requestMetadata.getPrincipalArn();
+                    }
                 }else if(arg instanceof String && StringUtils.isNotBlank((String) arg) && ((String) arg).length() == 40){
                     keyId = (String) arg;
                 }

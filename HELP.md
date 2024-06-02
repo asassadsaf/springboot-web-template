@@ -8,4 +8,4 @@ root_path
   --logs
     --sys
     --operation
-  --seckms-xkip-1.0.0.jar
+  --springboot-web-template-1.0.0.jar

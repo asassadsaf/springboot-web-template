@@ -1,0 +1,28 @@
+curl --location 'https://localhost:8080/test/v1/health' \
+--header 'Content-Type: application/json' \
+--data '{
+    "RequestMetadata": {
+        "PrincipalArn": "zhangsan:123",
+        "SourceVpc": "vpc123",
+        "KmsInstanceId": "abc001",
+        "KmsKeyArn": "key001:abc",
+        "KmsOperation": "health",
+        "KmsRequestId": "520c504c-47af-4b62-8f54-1e218e5e3826",
+        "KmsViaService": "service001"
+    }
+}'
+
+curl --location 'https://localhost:8080/test/v1/random' \
+--header 'Content-Type: application/json' \
+--data '{
+    "RequestMetadata": {
+        "PrincipalArn": "zhangsan:123",
+        "SourceVpc": "vpc123",
+        "KmsInstanceId": "abc001",
+        "KmsKeyArn": "key001:abc",
+        "KmsOperation": "health",
+        "KmsRequestId": "520c504c-47af-4b62-8f54-1e218e5e3826",
+        "KmsViaService": "service001"
+    },
+    "Length": 128
+}'

@@ -6,7 +6,7 @@ package com.fkp.template.constant;
  * @description
  * @date 2024/5/14 16:45
  */
-public enum XkiStatusEnum {
+public enum ServerStatusEnum {
     // 正常服务中
     ACTIVE,
     // 可服务，但处于异常状态

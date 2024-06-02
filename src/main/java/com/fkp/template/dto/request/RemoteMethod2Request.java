@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GenRandomEkmRequest {
+public class RemoteMethod2Request {
     private Integer length;
     private String spec;
     private String alg;

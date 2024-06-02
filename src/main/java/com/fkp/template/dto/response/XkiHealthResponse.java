@@ -17,10 +17,10 @@ import lombok.*;
 @AllArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.NONE)
 public class XkiHealthResponse extends BaseResponse{
-    private String XkiSpecification;
-    private String XkiServerName;
-    private String XkiServerVersion;
-    private String XkiVendor;
-    private String XkiStatus;
-    private String XkiMessage;
+    private String Specification;
+    private String ServerName;
+    private String ServerVersion;
+    private String Vendor;
+    private String Status;
+    private String Message;
 }

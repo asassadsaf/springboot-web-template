@@ -34,17 +34,17 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public XkiHealthResponse health(RequestMetadata requestMetadata) {
-        String xkiStatus = XkiStatusEnum.ACTIVE.name();
-        String xkiMessage = CommonConstant.OK;
+        String serverStatus = ServerStatusEnum.ACTIVE.name();
+        String serverMessage = CommonConstant.OK;
         try {
             //call service
         }catch (Exception e){
-            xkiStatus = XkiStatusEnum.UNAVAILABLE.name();
-            xkiMessage = "Call ekm get health status error.";
-            log.error(xkiMessage, e);
+            serverStatus = ServerStatusEnum.UNAVAILABLE.name();
+            serverMessage = "Call ekm get health status error.";
+            log.error(serverMessage, e);
         }
-        return XkiHealthResponse.builder().XkiSpecification(specification).XkiServerName(serverName).XkiServerVersion(serverVersion)
-                .XkiVendor(vendor).XkiStatus(xkiStatus).XkiMessage(xkiMessage).build();
+        return XkiHealthResponse.builder().Specification(specification).ServerName(serverName).ServerVersion(serverVersion)
+                .Vendor(vendor).Status(serverStatus).Message(serverMessage).build();
     }
 
     @Override

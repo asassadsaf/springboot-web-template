@@ -1,6 +1,6 @@
 package com.fkp.template.api;
 
-import com.fkp.template.dto.request.GenRandomEkmRequest;
+import com.fkp.template.dto.request.RemoteMethod2Request;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @description openfeign调用接口
  * @date 2024/5/17 15:57
  */
-@FeignClient(name = "xkipApi", url = "${remote.restUrl}/xkip/ali")
-public interface XkipApi {
+@FeignClient(name = "remoteApi", url = "${remote.restUrl}/xxx")
+public interface RemoteApi {
 
     //GET请求需要添加@RequestParam，否则openfeign将自动转为POST请求
-    @GetMapping(value = "/keyMeta")
-    Object getKeyMeta(@RequestParam(name = "externalKeyId") String externalKeyId);
+    @GetMapping(value = "/remoteMethod")
+    String remoteMethod(@RequestParam(name = "name") String name);
 
-    @PostMapping(value = "/random")
-    String generateRandom(@RequestBody GenRandomEkmRequest request);
+    @PostMapping(value = "/remoteMethod2")
+    String remoteMethod2(@RequestBody RemoteMethod2Request request);
 
 
 }
