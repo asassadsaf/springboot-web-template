@@ -2,18 +2,23 @@ package com.fkp.template.listener;
 
 import com.fkp.template.SpringBootWebTemplateApplication;
 import com.fkp.template.constant.ErrorCodeEnum;
+import com.fkp.template.entity.CertDigest;
+import com.fkp.template.entity.CertDigestBean;
 import com.fkp.template.exception.BusinessException;
+import com.fkp.template.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.InputStreamResource;
@@ -57,6 +62,7 @@ public class MyAppListener implements SpringApplicationRunListener {
     @Override
     public void ready(ConfigurableApplicationContext context, Duration timeTaken) {
         registerPolicyFileListener(context);
+        registerMyBean(context);
     }
 
     private void loadExternalConfig(ConfigurableEnvironment environment){
@@ -105,6 +111,26 @@ public class MyAppListener implements SpringApplicationRunListener {
     private void loadProvider(){
         if(Security.getProperty(BouncyCastleProvider.PROVIDER_NAME) == null){
             Security.addProvider(new BouncyCastleProvider());
+        }
+    }
+
+    private void registerMyBean(ConfigurableApplicationContext context){
+        if(context instanceof GenericApplicationContext){
+            GenericApplicationContext genericApplicationContext = (GenericApplicationContext) context;
+            //在ready阶段可以拿到ioc中的bean
+            SystemService systemService = context.getBean(SystemService.class);
+            List<CertDigest> data = systemService.generateCertDigest().getData();
+            CertDigest certDigest = data.get(0);
+            BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(CertDigestBean.class);
+            beanDefinitionBuilder.addConstructorArgValue(certDigest.getAlias());
+            beanDefinitionBuilder.addConstructorArgValue(certDigest.getCertDigestSha256());
+            beanDefinitionBuilder.addConstructorArgValue(certDigest.getCertDigestSm3());
+            beanDefinitionBuilder.addConstructorArgValue(certDigest.getPublicKeyDigestSha256());
+            beanDefinitionBuilder.addConstructorArgValue(certDigest.getPublicKeyDigestSm3());
+            //注册自定义的bean定义，此时还没有实例化bean，在首次使用到该bean时进行实例化
+            genericApplicationContext.registerBeanDefinition("fkpCertDigestBean", beanDefinitionBuilder.getBeanDefinition());
+            //获取该bean，触发实例化
+            context.getBean("fkpCertDigestBean");
         }
     }
 }
