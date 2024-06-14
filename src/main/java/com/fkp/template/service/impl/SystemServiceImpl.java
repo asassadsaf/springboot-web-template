@@ -49,6 +49,9 @@ public class SystemServiceImpl implements SystemService {
     @Value("${business.policy.path}")
     private String policyFilePath;
 
+    public SystemServiceImpl() {
+        log.info("system service impl call construction. content: {}", this);
+    }
 
     @Override
     public SimpleRestResponse<List<String>> queryIpWhiteList() {

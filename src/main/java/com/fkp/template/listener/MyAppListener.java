@@ -62,7 +62,8 @@ public class MyAppListener implements SpringApplicationRunListener {
     @Override
     public void ready(ConfigurableApplicationContext context, Duration timeTaken) {
         registerPolicyFileListener(context);
-        registerMyBean(context);
+        //容器启动完成后注册Bean定义，在首次使用Bean时进行初始化
+//        registerMyBean(context);
     }
 
     private void loadExternalConfig(ConfigurableEnvironment environment){

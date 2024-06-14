@@ -15,8 +15,7 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author fengkunpeng
@@ -25,6 +24,37 @@ import java.util.Map;
  * @date 2024/5/23 19:54
  */
 public class JavaTest {
+
+    //不在循环中，创建多个匿名类，其Class名不同class com.fkp.template.JavaTest$1/class com.fkp.template.JavaTest$2...
+    @Test
+    void testInnerClass() {
+        Class<? extends Object> aClass = new Object() {
+            private String str;
+        }.getClass();
+        Class<? extends Object> aClass2 = new Object() {
+            private String str;
+        }.getClass();
+        Class<? extends Object> aClass3 = new Object() {
+            private String str;
+        }.getClass();
+        System.out.println(aClass);
+        System.out.println(aClass2);
+        System.out.println(aClass3);
+    }
+
+    //在循环中，创建多个匿名类，其Class名相同
+    @Test
+    void testInnerClassForLoop(){
+        List<Class<? extends Object>> list = new LinkedList<>();
+        for (int i = 0; i < 3; i++) {
+            int finalI = i;
+            Class<? extends Object> aClass = new Object() {
+                private int index = finalI;
+            }.getClass();
+            list.add(aClass);
+        }
+        list.forEach(System.out::println);
+    }
 
     @Test
     void test(){
