@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.http.MimeHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
@@ -277,5 +278,27 @@ public class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public Part getPart(String name) throws IOException, ServletException {
         return super.getPart(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getPathVariableMap(){
+        Object attribute = super.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        if(attribute instanceof Map){
+            return (Map<String, String>) attribute;
+        }
+        return Collections.emptyMap();
+    }
+
+    /**
+     * 获取Controller中使用@PathVariable标注的参数
+     * @param key 参数key
+     * @return 参数值
+     */
+    public String getPathVariable(String key){
+        return getPathVariableMap().get(key);
+    }
+
+    public byte[] getBodyDataBytes(){
+        return Arrays.copyOf(data, data.length);
     }
 }
