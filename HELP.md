@@ -53,4 +53,10 @@ root_path<br/>
 
 ## 二十一、Spring提供的读取classpath下文件方式
 
+## 二十二、手动注册Bean到IOC容器的两种方式
+### 在监听器中通过GenericApplicationContext注册
+### 实现BeanDefinitionRegistryPostProcessor接口注册
+
+## 二十三、匿名内部类是否在循环中创建对类名的影响
+
 
