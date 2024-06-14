@@ -50,7 +50,7 @@ public class SystemServiceImpl implements SystemService {
     private String policyFilePath;
 
     public SystemServiceImpl() {
-        log.info("system service impl call construction. content: {}", this);
+//        log.info("system service impl call construction. content: {}", this);
     }
 
     @Override

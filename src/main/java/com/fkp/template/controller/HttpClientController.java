@@ -2,15 +2,14 @@ package com.fkp.template.controller;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.fkp.template.constant.CommonConstant;
-import org.apache.commons.collections.MapUtils;
+import lombok.SneakyThrows;
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -30,10 +29,23 @@ public class HttpClientController {
         return JSONObject.of("token", token, "name", name);
     }
     //POST-urlencoded
+    @PostMapping(value = "/postUrlEncoded")
+    public Map<String, Object> postUrlEncoded(String name, Integer age, HttpServletRequest request){
+        return JSONObject.of("name", name, "age", age, "token", request.getHeader("token"));
+    }
 
     //POST-form-data
+    @SneakyThrows
+    @PostMapping(value = "/postFormData")
+    public Map<String, Object> postFormData(String name, Integer age, MultipartFile file, HttpServletRequest request){
+        return JSONObject.of("name", name, "age", age, "file", IOUtils.toString(file.getInputStream(), StandardCharsets.UTF_8), "token", request.getHeader("token"));
+    }
 
     //POST-json
-
+    @PostMapping(value = "/postJson")
+    public Map<String, Object> postJson(@RequestBody Map<String, Object> param, HttpServletRequest request){
+        param.put("token", request.getHeader("token"));
+        return param;
+    }
 
 }

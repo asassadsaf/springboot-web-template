@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @description 用于增删改Bean定义
  * @date 2024/6/12 16:05
  */
-@Component
+//@Component
 public class MyBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 
     @Override

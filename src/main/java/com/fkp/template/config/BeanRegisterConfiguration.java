@@ -13,7 +13,7 @@ import java.util.List;
  * @description 配置类，用于注册Bean
  * @date 2024/6/13 9:48
  */
-@Configuration(proxyBeanMethods = false)
+//@Configuration(proxyBeanMethods = false)
 public class BeanRegisterConfiguration {
 
     //   通过@Bean注册           通过手动注册      通过@Service注册

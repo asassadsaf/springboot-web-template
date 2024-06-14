@@ -45,8 +45,8 @@
         </RollingFile>
     </appenders>
     <loggers>
-        <logger name="org.springframework" level="ERROR"/>
-        <logger name="org.apache" level="ERROR"/>
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.apache" level="WARN"/>
         <logger name="operationLog" level="INFO" additivity="false">
             <appender-ref ref="rollingFileOperation"/>
             <appender-ref ref="Console"/>

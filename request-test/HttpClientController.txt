@@ -1,0 +1,25 @@
+curl --location 'https://127.0.0.1:8080/test/v1/client/get?name=fkp' \
+--header 'tenantCode: zuhu1' \
+--header 'token: 123adf'
+
+curl --location 'https://127.0.0.1:8080/test/v1/client/postFormData' \
+--header 'tenantCode: zuhu1' \
+--header 'token: 123adf' \
+--form 'name="fkp"' \
+--form 'age="23"'
+
+curl --location 'https://127.0.0.1:8080/test/v1/client/postFormData' \
+--header 'tenantCode: zuhu1' \
+--header 'token: 123adf' \
+--form 'name="fkp"' \
+--form 'age="23"' \
+--form 'file=@"/D:/pmo/主干V4.0/过检/platform-cli/cert/scctc-enc.cer"'
+
+curl --location 'https://127.0.0.1:8080/test/v1/client/postJson' \
+--header 'tenantCode: zuhu1' \
+--header 'token: 123adf' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name":"fkp",
+    "age": 25
+}'
