@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.openfeign;
 
 import com.fkp.template.util.SignUtils;
 import feign.RequestInterceptor;

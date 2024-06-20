@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.web;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;

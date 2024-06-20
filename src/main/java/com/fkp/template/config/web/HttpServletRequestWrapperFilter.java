@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.web;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

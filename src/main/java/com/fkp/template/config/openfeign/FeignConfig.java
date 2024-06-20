@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.openfeign;
 
 import cn.hutool.http.ssl.TrustAnyHostnameVerifier;
 import com.fkp.template.constant.ErrorCodeEnum;

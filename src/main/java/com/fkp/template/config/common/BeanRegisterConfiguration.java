@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.common;
 
 import com.fkp.template.entity.CertDigestBean;
 import com.fkp.template.entity.CertDigestListBean;

@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.openfeign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

@@ -1,4 +1,4 @@
-package com.fkp.template.config;
+package com.fkp.template.config.web;
 
 import com.fkp.template.constant.ErrorCodeEnum;
 import com.fkp.template.exception.BusinessException;

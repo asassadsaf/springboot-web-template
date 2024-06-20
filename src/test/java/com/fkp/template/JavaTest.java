@@ -63,6 +63,11 @@ public class JavaTest {
     }
 
     @Test
+    void test6(){
+        System.out.println(10_000);
+    }
+
+    @Test
     void test2() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, CertificateException {
         Security.addProvider(new BouncyCastleProvider());
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

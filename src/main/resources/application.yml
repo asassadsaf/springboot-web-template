@@ -2,8 +2,44 @@ spring:
   application:
     name: service-template
   main:
-    #允许循环引用
-    allow-circular-references: true
+    #是否允许Bean循环引用
+    allow-circular-references: false
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: "jdbc:sqlite:${spring.application.name}/database/sqlite3/core/sqlite3.db?date_string_format=yyyy-MM-dd HH:mm:ss"
+    driver-class-name: org.sqlite.JDBC
+    druid:
+      # 建立tcp连接超时时间 默认10秒
+      connect-timeout: 10000
+      # tcp响应超时时间 默认10秒
+      socket-timeout: 10000
+      # 从连接池获取连接的超时时间 默认-1
+      max-wait: 30000
+      # 初始连接数 默认0
+      initial-size: 0
+      # 最小连接数 默认0
+      min-idle: 0
+      # 最大连接数 默认8
+      max-active: 8
+      # 获取连接时校验连接可用性 默认false
+      test-on-borrow: false
+      # 连接归还连接池时校验连接可用性 默认false
+      test-on-return: false
+      # 从连接池获取连接时若连接空闲时间大于timeBetweenEvictionRunsMillis就执行validationQuery校验连接是否可用 默认true
+      test-while-idle: true
+      # 校验连接时执行的sql
+      validation-query: SELECT 1
+      # 大于该空闲时间且testWhileIdle=true时执行validationQuery校验 默认60秒
+      time-between-eviction-runs-millis: 60000
+      # 大于该空闲时间且连接数大于minIdle就逐出 默认30分钟
+      min-evictable-idle-time-millis: 1800000
+      # 大于该空闲时间逐出连接池 默认7小时
+      max-evictable-idle-time-millis: 25200000
+      # 是否开启连接保活，定时发送心跳包 默认false
+      keep-alive: false
+      # 连接保活发送心跳间隔时间 默认timeBetweenEvictionRunsMillis * 2
+      keep-alive-between-time-millis: 120000
+
 server:
   ssl:
     enabled: true
@@ -33,3 +69,10 @@ remote:
 #配置log4j2配置文件路径
 logging:
   config: "${application.path}/config/log4j2.xml"
+
+mybatis-plus:
+  mapper-locations:
+    - classpath:mappers/*/*.xml
+
+database:
+  type: sqlite
