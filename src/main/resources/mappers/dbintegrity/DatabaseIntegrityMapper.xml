@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fkp.template.mapper.DatabaseIntegrityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.fkp.template.entity.DatabaseIntegrity">
+        <id column="id" property="id" />
+        <result column="db_type" property="dbType" />
+        <result column="db_ip" property="dbIp" />
+        <result column="db_port" property="dbPort" />
+        <result column="db_user" property="dbUser" />
+        <result column="db_pwd" property="dbPwd" />
+        <result column="db_case" property="dbCase" />
+        <result column="db_schema" property="dbSchema" />
+        <result column="db_table" property="dbTable" />
+        <result column="db_sql" property="dbSql" />
+        <result column="start_limit" property="startLimit" />
+        <result column="end_limit" property="endLimit" />
+        <result column="frequency" property="frequency" />
+        <result column="key_id" property="keyId" />
+        <result column="key_alg" property="keyAlg" />
+        <result column="create_date" property="createDate" />
+        <result column="update_date" property="updateDate" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, db_type, db_ip, db_port, db_user, db_pwd, db_case, db_schema, db_table, db_sql, start_limit, end_limit, frequency, key_id, key_alg, create_date, update_date, remark
+    </sql>
+
+</mapper>

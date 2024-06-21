@@ -104,7 +104,7 @@ public class MyAppListener implements SpringApplicationRunListener {
 
     //获取Jar包同级目录
     private void setApplicationPath(){
-        ApplicationHome applicationHome = new ApplicationHome(SpringBootWebTemplateApplication.class);
+        ApplicationHome applicationHome = new ApplicationHome();
         String applicationPath = applicationHome.getDir().getAbsolutePath();
         System.setProperty("application.path", applicationPath);
     }

@@ -21,8 +21,8 @@ CREATE TABLE "storage_database_integrity" (
   "key_name" text(128),
   "verify_status" integer,
   "hmac_hex" text(255),
-  "create_time" text,
-  "update_time" text,
+  "create_date" datetime,
+  "update_date" datetime,
   "remark" text(255),
   PRIMARY KEY ("id")
 );

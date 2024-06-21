@@ -1,12 +1,10 @@
+server:
+  port: 8080
+
 spring:
-  application:
-    name: service-template
-  main:
-    #是否允许Bean循环引用
-    allow-circular-references: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: "jdbc:sqlite:${spring.application.name}/database/sqlite3/core/sqlite3.db?date_string_format=yyyy-MM-dd HH:mm:ss"
+    url: "jdbc:sqlite:${application.path}/database/sqlite3/core/sqlite3.db"
     driver-class-name: org.sqlite.JDBC
     druid:
       # 建立tcp连接超时时间 默认10秒
@@ -39,31 +37,12 @@ spring:
       keep-alive: false
       # 连接保活发送心跳间隔时间 默认timeBetweenEvictionRunsMillis * 2
       keep-alive-between-time-millis: 120000
-  # 程序启动初始化sql配置
-  sql:
-    init:
-      # ALWAYS、EMBEDDED(嵌入数据库才执行)、NEVER
-      mode: ALWAYS
-      # ddl脚本路径
-      schema-locations: "file:${application.path}/database/sqlite3/sql/sqlite3_DDL.sql"
-      # dml脚本路径
-      data-locations: "file:${application.path}/database/sqlite3/sql/sqlite3_DML.sql"
-      # 发生错误是否继续
-      continue-on-error: false
-      # sql脚本编码
-      encoding: UTF-8
 
-server:
-  ssl:
-    enabled: true
-    key-store-type: jks
-    key-store: classpath:rsa_server.jks
-    key-store-password: swxa@2024
-    ciphers:
-      - TLS_AES_256_GCM_SHA384
-      - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-      - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-  port: 8080
+remote:
+  restUrl: https://localhost:7077/test
+
+database:
+  type: sqlite
 
 # ${application.path}为Jar包同级目录
 business:
@@ -76,16 +55,3 @@ business:
     getSourceIps: "${application.path}/config/shell/getSourceIps.sh"
   policy:
     path: "${application.path}/config/policy/policy.yml"
-remote:
-    restUrl: https://localhost:7077/test
-
-#配置log4j2配置文件路径
-logging:
-  config: "${application.path}/config/log4j2.xml"
-
-mybatis-plus:
-  mapper-locations:
-    - classpath:mappers/*/*.xml
-
-database:
-  type: sqlite

@@ -1,7 +1,0 @@
-server:
-  port: 8080
-sec:
-  kms:
-    ekm:
-      restUrl: http://localhost:7077/kms/cloud/v4
-
