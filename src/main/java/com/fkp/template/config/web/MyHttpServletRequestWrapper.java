@@ -32,7 +32,7 @@ public class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     private final MimeHeaders headers;
 
-    private final byte[] data;
+    private byte[] data;
 
     /**
      * Constructs a request object wrapping the given request.
@@ -227,37 +227,59 @@ public class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
         });
     }
 
+    /**
+     * 获取body体参数，仅contentType为text/plain和application/json，其余返回空Map以兼容其他未验证的接口逻辑
+     * @return body体参数集合
+     */
     public Map<String, Object> getBodyParamMap(){
         String contentType = getContentType();
-        if(StringUtils.isBlank(contentType)){
-            return null;
+        try {
+            //raw: text(json) json
+            //只考虑json为object的情况，json array不考虑
+            validateBodyParamByContentType(contentType);
+        }catch (IllegalArgumentException e){
+            log.error("Get body param map error, validate body param by content type error. contentType: {}", contentType, e);
+            return Collections.emptyMap();
         }
-        String contentTypeLower = contentType.toLowerCase(Locale.ROOT);
-        //raw: text(json) json
-        //只考虑json为object的情况，json array不考虑
-        if(contentTypeLower.contains(MediaType.TEXT_PLAIN_VALUE) || contentTypeLower.contains(MediaType.APPLICATION_JSON_VALUE)){
-            String str;
-            try {
-                str = new String(data, getCharacterEncoding());
-            } catch (UnsupportedEncodingException e) {
-                log.error("convert bytes data to string error.", e);
-                return null;
-            }
-            //Object
-            if(!str.startsWith("{")){
-                log.error("parse json str to object error, str not start with '{'. str: {}", str);
-                return null;
-            }
-            JSONObject jsonObject;
-            try {
-                jsonObject = JSON.parseObject(str);
-            }catch (Exception e){
-                log.error("parse json str to object error. str: {}", str, e);
-                return null;
-            }
-            return Collections.unmodifiableMap(jsonObject);
+
+        try {
+            return getMapByBodyBytes();
+        }catch (IllegalArgumentException e){
+            log.error("Get body param map error, get map by body bytes error.", e);
+            return Collections.emptyMap();
         }
-        return null;
+    }
+
+    /**
+     * 向Body体中添加参数，仅contentType为text/plain和application/json，其余将不做任何操作以兼容未验证的接口逻辑
+     * @param key 参数名
+     * @param value 参数值
+     */
+    public void setBodyParam(String key, Object value){
+        String contentType = getContentType();
+        try {
+            //raw: text(json) json
+            //只考虑json为object的情况，json array不考虑
+            validateBodyParamByContentType(contentType);
+        }catch (IllegalArgumentException e){
+            log.error("Set body param error, validate body param by content type error. contentType: {}", contentType, e);
+            return;
+        }
+        Map<String, Object> bodyMap;
+        try {
+            bodyMap = getMapByBodyBytes();
+        }catch (IllegalArgumentException e){
+            log.error("Set body param error, get map by body bytes error.", e);
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putAll(bodyMap);
+        jsonObject.put(key, value);
+        try {
+            data = JSON.toJSONString(jsonObject).getBytes(getCharacterEncoding());
+        } catch (UnsupportedEncodingException e) {
+            log.error("Set body param error, convert json object to bytes error. jsonObject: {}", jsonObject, e);
+        }
     }
 
     public Object getBodyParam(String name){
@@ -267,8 +289,6 @@ public class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
     /**
      * POST(form-data)请求类型时调用改方法用来构造StandardMultipartHttpServletRequest对象
      * @return 包含请求参数(普通参数parameter以及文件参数file)的Part对象的集合
-     * @throws IOException
-     * @throws ServletException
      */
     @Override
     public Collection<Part> getParts() throws IOException, ServletException {
@@ -300,5 +320,37 @@ public class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     public byte[] getBodyDataBytes(){
         return Arrays.copyOf(data, data.length);
+    }
+
+    private Map<String, Object> getMapByBodyBytes(){
+        String str;
+        try {
+            str = new String(data, getCharacterEncoding());
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("Convert bytes data to string error.", e);
+        }
+        //Object
+        if(!str.startsWith("{")){
+            throw new IllegalArgumentException("Parse json str to object error, str not start with '{'. str: " + str);
+        }
+        JSONObject jsonObject;
+        try {
+            jsonObject = JSON.parseObject(str);
+        }catch (Exception e){
+            throw new IllegalArgumentException("Parse json str to object error. str: " + str, e);
+        }
+        return Collections.unmodifiableMap(jsonObject);
+    }
+
+    private void validateBodyParamByContentType(String contentType){
+        if(StringUtils.isBlank(contentType)){
+            throw new IllegalArgumentException("Validate body param error, content type is blank.");
+        }
+        String contentTypeLower = contentType.toLowerCase(Locale.ROOT);
+        //raw: text(json) json
+        //只考虑json为object的情况，json array不考虑
+        if(!contentTypeLower.contains(MediaType.TEXT_PLAIN_VALUE) && !contentTypeLower.contains(MediaType.APPLICATION_JSON_VALUE)){
+            throw new IllegalArgumentException("Validate body param error, content type is not text/plain or application/json.");
+        }
     }
 }

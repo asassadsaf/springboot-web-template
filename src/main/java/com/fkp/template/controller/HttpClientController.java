@@ -1,8 +1,11 @@
 package com.fkp.template.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.fkp.template.config.web.MyHttpServletRequestWrapper;
 import com.fkp.template.constant.CommonConstant;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = CommonConstant.BASE_URL + "/" + CommonConstant.VERSION_V1 + "/client", produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class HttpClientController {
 
     //GET-header
@@ -46,6 +50,21 @@ public class HttpClientController {
     public Map<String, Object> postJson(@RequestBody Map<String, Object> param, HttpServletRequest request){
         param.put("token", request.getHeader("token"));
         return param;
+    }
+
+    //POST请求，通过url传递参数时，body体为空，参数存在parameter中
+    @PostMapping(value = "/postParam")
+    public Map<String, Object> postParam(@RequestParam(value = "param") String jsonParam, HttpServletRequest request){
+        MyHttpServletRequestWrapper wrapper = (MyHttpServletRequestWrapper) request;
+        //此时contentType为空，这里bodyParamMap为空Map,内部会打印错误日志
+        Map<String, Object> bodyParamMap = wrapper.getBodyParamMap();
+        Map<String, String[]> parameterMap = wrapper.getParameterMap();
+        log.info("bodyParamMap: {}", bodyParamMap);
+        log.info("paramMap: {}", parameterMap);
+        //此时setBodyParam不会做任何操作吗，内部会打印错误日志
+        wrapper.setBodyParam("addr", "jinan");
+        log.info("bodyParam addr: {}", wrapper.getBodyParam("addr"));
+        return JSON.parseObject(jsonParam);
     }
 
 }
