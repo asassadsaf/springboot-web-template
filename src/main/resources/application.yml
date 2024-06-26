@@ -80,6 +80,9 @@ business:
     dataSourceCache:
       maxSize: 128
       expireAfterAccessMinute: 1440
+    verifySchedulingRate: 10
+    connectTimeOut: 5000
+    minEvictableIdleTimeMillis: 30000
 remote:
     restUrl: https://localhost:7077/test
 
@@ -96,3 +99,7 @@ mybatis-plus:
 
 database:
   type: sqlite
+
+synthesis:
+  lmk1: +Rvtz3+unEEL0RfTtEsDBQ==
+  lmk2FilePath: "${application.path}/config/synthesis/synthesis.key"

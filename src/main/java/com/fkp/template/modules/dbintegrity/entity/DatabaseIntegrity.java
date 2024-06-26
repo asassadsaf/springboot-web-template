@@ -3,7 +3,9 @@ package com.fkp.template.modules.dbintegrity.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fkp.template.modules.dbintegrity.params.request.DatabaseIntegrityAddRequest;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -67,4 +69,9 @@ public class DatabaseIntegrity implements Serializable {
 
     private String remark;
 
+    public static DatabaseIntegrity instance(DatabaseIntegrityAddRequest params) {
+        DatabaseIntegrity databaseIntegrity = new DatabaseIntegrity();
+        BeanUtils.copyProperties(params, databaseIntegrity);
+        return databaseIntegrity;
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * @author fengkunpeng
@@ -20,6 +21,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "com.fkp.template.modules.*.api")
 //扫描mapper接口
 @MapperScan(basePackages = "com.fkp.template.modules.*.mapper")
+@EnableScheduling
 public class SpringBootWebTemplateApplication {
 
     public static void main(String[] args) throws Exception {

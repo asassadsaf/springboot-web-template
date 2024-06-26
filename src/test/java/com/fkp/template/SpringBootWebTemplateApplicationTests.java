@@ -1,8 +1,10 @@
 package com.fkp.template;
 
+import com.fkp.template.core.util.SynthesisCryptoUtils;
 import com.fkp.template.modules.xkip.dto.response.SimpleRestResponse;
 import com.fkp.template.modules.xkip.service.SystemService;
 import com.fkp.template.core.util.SpringBeanUtils;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,15 @@ class SpringBootWebTemplateApplicationTests {
 
     @Value("${business.shellPath.getSourceIps}")
     private String path;
+
+    @SneakyThrows
+    @Test
+    void synthesisTest(){
+        String s = SynthesisCryptoUtils.encPwd("SWXA1234@DAR_Mysql");
+        System.out.println(s);
+        String s1 = SynthesisCryptoUtils.decPwd(s);
+        System.out.println(s1);
+    }
 
     @Test
     void testGetSourceIps(){

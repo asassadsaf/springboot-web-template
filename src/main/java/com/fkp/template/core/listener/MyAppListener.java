@@ -1,6 +1,7 @@
 package com.fkp.template.core.listener;
 
 import com.fkp.template.core.constant.ErrorCodeEnum;
+import com.fkp.template.core.util.SynthesisCryptoUtils;
 import com.fkp.template.modules.xkip.entity.CertDigest;
 import com.fkp.template.modules.xkip.entity.CertDigestBean;
 import com.fkp.template.core.exception.BusinessException;
@@ -56,6 +57,7 @@ public class MyAppListener implements SpringApplicationRunListener {
     @Override
     public void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
         loadExternalConfig(environment);
+        initSynthesis(environment);
     }
 
     @Override
@@ -63,6 +65,16 @@ public class MyAppListener implements SpringApplicationRunListener {
         registerPolicyFileListener(context);
         //容器启动完成后注册Bean定义，在首次使用Bean时进行初始化
 //        registerMyBean(context);
+    }
+
+    private void initSynthesis(ConfigurableEnvironment environment) {
+        String lmk1 = environment.getProperty("synthesis.lmk1");
+        String filePath = environment.getProperty("synthesis.lmk2FilePath");
+        try {
+            SynthesisCryptoUtils.init(lmk1, filePath);
+        }catch (Exception e){
+            log.error("init synthesis key error.", e);
+        }
     }
 
     private void loadExternalConfig(ConfigurableEnvironment environment){
