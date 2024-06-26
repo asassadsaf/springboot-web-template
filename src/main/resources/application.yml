@@ -6,7 +6,7 @@ spring:
     allow-circular-references: false
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: "jdbc:sqlite:${spring.application.name}/database/sqlite3/core/sqlite3.db?date_string_format=yyyy-MM-dd HH:mm:ss"
+    url: "jdbc:sqlite:${spring.application.name}/database/sqlite3/core/sqlite3.db"
     driver-class-name: org.sqlite.JDBC
     druid:
       # 建立tcp连接超时时间 默认10秒
@@ -79,13 +79,16 @@ business:
 remote:
     restUrl: https://localhost:7077/test
 
-#配置log4j2配置文件路径
+# 配置log4j2配置文件路径
 logging:
   config: "${application.path}/config/log4j2.xml"
 
 mybatis-plus:
+  # 指定mapper xml的位置
   mapper-locations:
     - classpath:mappers/*/*.xml
+  # 指定类型转换器包位置
+  type-handlers-package: com.fkp.template.config.database.typehandler
 
 database:
   type: sqlite
