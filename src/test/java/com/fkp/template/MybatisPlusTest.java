@@ -1,13 +1,11 @@
 package com.fkp.template;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.fkp.template.entity.DatabaseIntegrity;
-import com.fkp.template.mapper.DatabaseIntegrityMapper;
+import com.fkp.template.modules.dbintegrity.entity.DatabaseIntegrity;
+import com.fkp.template.modules.dbintegrity.mapper.DatabaseIntegrityMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.executor.BatchResult;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;

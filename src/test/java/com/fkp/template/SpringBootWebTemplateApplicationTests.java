@@ -1,8 +1,8 @@
 package com.fkp.template;
 
-import com.fkp.template.dto.response.SimpleRestResponse;
-import com.fkp.template.service.SystemService;
-import com.fkp.template.util.SpringBeanUtils;
+import com.fkp.template.modules.xkip.dto.response.SimpleRestResponse;
+import com.fkp.template.modules.xkip.service.SystemService;
+import com.fkp.template.core.util.SpringBeanUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;

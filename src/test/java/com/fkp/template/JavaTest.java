@@ -1,6 +1,6 @@
 package com.fkp.template;
 
-import com.fkp.template.dto.request.GenRandomRequest;
+import com.fkp.template.modules.xkip.dto.request.GenRandomRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Hex;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

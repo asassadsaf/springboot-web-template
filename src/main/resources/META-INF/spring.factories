@@ -1,2 +1,2 @@
 org.springframework.boot.SpringApplicationRunListener=\
-  com.fkp.template.listener.MyAppListener
+  com.fkp.template.core.listener.MyAppListener

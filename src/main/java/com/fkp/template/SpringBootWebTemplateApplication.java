@@ -15,11 +15,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 //扫描servlet过滤器
-@ServletComponentScan(basePackages = "com.fkp.template.config")
+@ServletComponentScan(basePackages = "com.fkp.template.core.config.web")
 //扫描feign接口
-@EnableFeignClients(basePackages = "com.fkp.template.api")
+@EnableFeignClients(basePackages = "com.fkp.template.modules.*.api")
 //扫描mapper接口
-@MapperScan(basePackages = "com.fkp.template.mapper")
+@MapperScan(basePackages = "com.fkp.template.modules.*.mapper")
 public class SpringBootWebTemplateApplication {
 
     public static void main(String[] args) throws Exception {

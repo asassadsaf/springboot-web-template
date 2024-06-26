@@ -76,6 +76,10 @@ business:
     getSourceIps: "${application.path}/config/shell/getSourceIps.sh"
   policy:
     path: "${application.path}/config/policy/policy.yml"
+  databaseIntegrity:
+    dataSourceCache:
+      maxSize: 128
+      expireAfterAccessMinute: 1440
 remote:
     restUrl: https://localhost:7077/test
 
@@ -88,7 +92,7 @@ mybatis-plus:
   mapper-locations:
     - classpath:mappers/*/*.xml
   # 指定类型转换器包位置
-  type-handlers-package: com.fkp.template.config.database.typehandler
+  type-handlers-package: com.fkp.template.core.config.database.typehandler
 
 database:
   type: sqlite

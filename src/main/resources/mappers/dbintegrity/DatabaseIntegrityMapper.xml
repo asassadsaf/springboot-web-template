@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fkp.template.mapper.DatabaseIntegrityMapper">
+<mapper namespace="com.fkp.template.modules.dbintegrity.mapper.DatabaseIntegrityMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.fkp.template.entity.DatabaseIntegrity">
+    <resultMap id="BaseResultMap" type="com.fkp.template.modules.dbintegrity.entity.DatabaseIntegrity">
         <id column="id" property="id" />
         <result column="db_type" property="dbType" />
         <result column="db_ip" property="dbIp" />
