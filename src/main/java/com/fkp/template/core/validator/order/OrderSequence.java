@@ -5,7 +5,7 @@ import javax.validation.GroupSequence;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description Validator框架分组序列，使用Validator注解时确认其校验顺序
  * @date 2024/6/18 11:44
  */
 

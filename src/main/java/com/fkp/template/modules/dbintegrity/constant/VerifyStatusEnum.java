@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 数据库完整性校验状态枚举
  * @date 2024/6/18 19:59
  */
 @Getter

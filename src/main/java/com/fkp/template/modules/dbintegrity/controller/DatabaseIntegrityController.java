@@ -21,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 数据库完整性接口控制器
  * @date 2024/6/18 10:50
  */
 @RestController

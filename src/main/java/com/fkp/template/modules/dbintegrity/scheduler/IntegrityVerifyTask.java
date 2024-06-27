@@ -17,7 +17,7 @@ import java.util.concurrent.ScheduledFuture;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 校验数据库完整性任务类，注册为原型模式的Bean,使用Spring声明式事务
  * @date 2024/6/20 10:32
  */
 @Component

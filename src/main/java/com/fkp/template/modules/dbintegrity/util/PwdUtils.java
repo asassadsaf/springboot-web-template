@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 密码加解密工具类
  * @date 2024/6/18 21:23
  */
 @Slf4j

@@ -46,6 +46,7 @@ public enum RestErrorEnum {
         this.msg = msg;
     }
 
+    //枚举类错误码的常量类，以便在注解属性中使用
     public static class CodeConstant {
         public static final String DATABASE_EXCEPTION_CODE = "05000020";
         public static final String CRYPTO_DEVICE_ERROR_CODE = "05000030";

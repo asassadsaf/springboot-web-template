@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 数据库完整性业务校验工具类
  * @date 2024/6/18 11:03
  */
 @Slf4j

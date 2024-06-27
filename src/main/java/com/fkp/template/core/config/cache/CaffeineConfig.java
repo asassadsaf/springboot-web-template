@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description 初始化一个Caffeine Cache
+ * @description 初始化Caffeine Cache
  * @date 2024/5/28 17:52
  */
 @Configuration(proxyBeanMethods = false)

@@ -10,7 +10,7 @@ import java.util.Base64;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 三分量合成加解密工具类
  * @date 2024/6/26 16:06
  */
 

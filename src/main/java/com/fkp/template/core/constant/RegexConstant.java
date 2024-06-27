@@ -3,7 +3,7 @@ package com.fkp.template.core.constant;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 正则表达式常量
  * @date 2024/6/26 14:46
  */
 public class RegexConstant {

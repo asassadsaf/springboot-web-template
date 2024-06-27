@@ -57,6 +57,7 @@ public class MyAppListener implements SpringApplicationRunListener {
     @Override
     public void environmentPrepared(ConfigurableBootstrapContext bootstrapContext, ConfigurableEnvironment environment) {
         loadExternalConfig(environment);
+        // 初始化合成分量加解密工具类
         initSynthesis(environment);
     }
 

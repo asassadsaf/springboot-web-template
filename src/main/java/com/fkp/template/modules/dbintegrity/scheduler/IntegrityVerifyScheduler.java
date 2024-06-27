@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description Spring定时任务，用于扫描所有数据库完整性记录，并根据校验频率启动定时任务。
  * @date 2024/6/19 19:58
  */
 @Component

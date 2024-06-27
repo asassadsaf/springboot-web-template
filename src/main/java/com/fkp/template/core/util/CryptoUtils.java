@@ -15,12 +15,19 @@ import java.security.spec.AlgorithmParameterSpec;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 密码运算工具类
  * @date 2024/6/26 18:41
  */
 public class CryptoUtils {
     private CryptoUtils(){}
 
+    /**
+     * SM4/CBC/PKCS5Padding加解密
+     * @param mode 加密1/解密2
+     * @param keyBlob 密钥
+     * @param plainBlob 明文或密文
+     * @return 密文或明文
+     */
     public static byte[] sm4EncDec(int mode, byte[] keyBlob, byte[] plainBlob) throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
         byte[] iv = new byte[16];
         AlgorithmParameterSpec ivSpec = new IvParameterSpec(iv);
@@ -30,6 +37,12 @@ public class CryptoUtils {
         return cipher.doFinal(plainBlob);
     }
 
+    /**
+     * HMAC_SM3运算
+     * @param keyBlob SM3密钥
+     * @param plainBlob 待HMAC数据
+     * @return HMAC后的数据
+     */
     public static byte[] hmacSm3(byte[] keyBlob, byte[] plainBlob) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
         Mac mac = Mac.getInstance("HMACSM3", BouncyCastleProvider.PROVIDER_NAME);
         Key keySpec = new SecretKeySpec(keyBlob, "HMACSM3");

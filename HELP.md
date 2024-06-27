@@ -59,4 +59,40 @@ root_path<br/>
 
 ## 二十三、匿名内部类是否在循环中创建对类名的影响
 
+## HttpServletRequestWrapper获取@PathVariable标注的参数
 
+## springboot启动时执行sql脚本初始化数据库
+
+## MybatisPlus自定义Id生成器
+
+## MybatisPlus自定义字段填充处理器
+
+## MybatisPlus自定义DatabaseIdProvider，用于手动处理多种数据库类型
+
+## MybatisPlus分页插件
+
+## MybatisPlus类型转换处理器，自定义DateTypeHandler用于统一日期格式
+
+## MybatisPlus工具类，通过方法引用获取该字段名
+
+## 三分量合成密钥加解密工具类
+
+## Caffeine缓存指定过期时间和删除监听器
+
+## Validator校验框架使用组序列规定校验顺序
+
+## 通过上下文对象选取接口的实现类
+
+## SpringBoot开启并使用@Scheduled定时任务
+
+## 在Runnable接口实现类中使用Spring声明式事务，Bean的原型模式
+
+## SpringBoot手动提交回滚事务
+
+## 定时任务实现在条件成立的情况下自己取消
+
+## 手动使用Druid连接池管理获取数据库连接并进行jdbc操作
+
+## Druid连接池中连接的关闭机制以及连接池的关闭机制
+
+## DruidDataSource加入以及逐出缓存的实际，使用双重检查锁机制避免重复加入缓存并减少性能损耗

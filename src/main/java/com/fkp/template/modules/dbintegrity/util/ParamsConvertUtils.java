@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 数据库完整性参数转换工具类
  * @date 2024/6/18 14:20
  */
 public class ParamsConvertUtils {

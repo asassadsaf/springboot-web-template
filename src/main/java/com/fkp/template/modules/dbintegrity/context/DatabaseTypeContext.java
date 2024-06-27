@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author fengkunpeng
  * @version 1.0
- * @description
+ * @description 数据库类型服务上下文对象，用于通过数据库类型选择具体实现类
  * @date 2024/6/18 16:41
  */
 @Component
