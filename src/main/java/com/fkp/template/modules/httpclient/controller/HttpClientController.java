@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -42,7 +44,12 @@ public class HttpClientController {
     @SneakyThrows
     @PostMapping(value = "/postFormData")
     public Map<String, Object> postFormData(String name, Integer age, MultipartFile file, HttpServletRequest request){
-        return JSONObject.of("name", name, "age", age, "file", IOUtils.toString(file.getInputStream(), StandardCharsets.UTF_8), "token", request.getHeader("token"));
+        String content;
+        try (InputStream inputStream = file.getInputStream()){
+            // toString方法不关闭stream流，若不手动关闭会导致保存在tomcat中的临时文件无法删除
+            content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        }
+        return JSONObject.of("name", name, "age", age, "file", content, "token", request.getHeader("token"));
     }
 
     //POST-json
