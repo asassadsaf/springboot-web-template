@@ -12,6 +12,8 @@ import lombok.Getter;
 public enum RestErrorEnum {
     DATABASE_EXCEPTION(CodeConstant.DATABASE_EXCEPTION_CODE, "Database Error."),
     CRYPTO_DEVICE_ERROR(CodeConstant.CRYPTO_DEVICE_ERROR_CODE, "Crypto device error"),
+    AUTHENTICATION_ERROR(CodeConstant.AUTHENTICATION_ERROR_CODE, "Authentication error."),
+    AUTHORIZATION_ERROR(CodeConstant.AUTHORIZATION_ERROR_CODE, "Authentication failed, please login."),
 
     DATABASE_INTEGRITY_DB_TYPE_NOT_SUPPORT(CodeConstant.DATABASE_INTEGRITY_DB_TYPE_NOT_SUPPORT_CODE, "Database type not support."),
     DATABASE_INTEGRITY_DB_IP_FORMAT_ERROR(CodeConstant.DATABASE_INTEGRITY_DB_IP_FORMAT_ERROR_CODE, "Database ip format error."),
@@ -50,6 +52,8 @@ public enum RestErrorEnum {
     public static class CodeConstant {
         public static final String DATABASE_EXCEPTION_CODE = "05000020";
         public static final String CRYPTO_DEVICE_ERROR_CODE = "05000030";
+        public static final String AUTHENTICATION_ERROR_CODE = "05000040";
+        public static final String AUTHORIZATION_ERROR_CODE = "05000050";
         public static final String DATABASE_INTEGRITY_DB_TYPE_NOT_SUPPORT_CODE = "05235001";
         public static final String DATABASE_INTEGRITY_DB_IP_FORMAT_ERROR_CODE = "05235002";
         public static final String DATABASE_INTEGRITY_DB_PORT_FORMAT_ERROR_CODE = "05235003";
@@ -74,5 +78,14 @@ public enum RestErrorEnum {
         public static final String DATABASE_INTEGRITY_ID_NOT_BLANK_CODE = "05235022";
         public static final String DATABASE_INTEGRITY_DB_INFO_NOT_EXIST_ERROR_CODE = "05235023";
         public static final String DATABASE_INTEGRITY_PAGE_PARAMS_INVALID_CODE = "05235024";
+    }
+
+    public static RestErrorEnum getByCode(String code){
+        for (RestErrorEnum value : RestErrorEnum.values()) {
+            if (value.code.equals(code)) {
+                return value;
+            }
+        }
+        return null;
     }
 }

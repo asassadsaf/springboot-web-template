@@ -84,7 +84,7 @@ business:
     connectTimeOut: 5000
     minEvictableIdleTimeMillis: 30000
 remote:
-    restUrl: https://localhost:7077/test
+  restUrl: https://localhost:7077/test
 
 # 配置log4j2配置文件路径
 logging:
@@ -103,3 +103,12 @@ database:
 synthesis:
   lmk1: +Rvtz3+unEEL0RfTtEsDBQ==
   lmk2FilePath: "${application.path}/config/synthesis/synthesis.key"
+
+authentication:
+  username: fkp
+  # 123456
+  password: +okwiyFQnFtRpa4YOONg+Q==
+  token:
+    header: Authorization
+    secret: abcdefghij0123456789ABCDEFGHIJKL
+    expireTime: 30

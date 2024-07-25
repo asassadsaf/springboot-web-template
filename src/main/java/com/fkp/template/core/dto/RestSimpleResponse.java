@@ -44,4 +44,11 @@ public class RestSimpleResponse<T> {
         return res;
     }
 
+    public static <T> RestSimpleResponse<T> fail(String code, String message){
+        RestSimpleResponse<T> res = new RestSimpleResponse<>();
+        res.setCode(code);
+        res.setMessage(message);
+        return res;
+    }
+
 }

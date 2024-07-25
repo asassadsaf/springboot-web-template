@@ -22,5 +22,6 @@ public class CommonConstant {
     public static final String POLICY_KEY_DISABLE_OUTPUT_FORM_PLAIN = "disableOutputFormPlain";
     public static final String REQUEST_METADATA_NAME = "requestMetadata";
     public static final String KEY_ID_NAME = "keyId";
+    public static final String LOGIN_URL = BASE_URL + "/" + VERSION_V1 + "/authentication/login";
 
 }

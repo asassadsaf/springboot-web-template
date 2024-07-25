@@ -24,6 +24,13 @@ class SpringBootWebTemplateApplicationTests {
 
     @SneakyThrows
     @Test
+    void testSynthesisCrypto(){
+        String s = SynthesisCryptoUtils.encPwd("123456");
+        System.out.println(s);
+    }
+
+    @SneakyThrows
+    @Test
     void synthesisTest(){
         String s = SynthesisCryptoUtils.encPwd("SWXA1234@DAR_Mysql");
         System.out.println(s);

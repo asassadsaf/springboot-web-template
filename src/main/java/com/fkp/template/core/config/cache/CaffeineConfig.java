@@ -1,6 +1,7 @@
 package com.fkp.template.core.config.cache;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.fkp.template.modules.authentication.entity.SysUserDetails;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,10 @@ public class CaffeineConfig {
     @Value("${business.databaseIntegrity.dataSourceCache.expireAfterAccessMinute:1440}")
     private Long expireAfterAccessMinute;
 
+    // 令牌有效期（默认30分钟）
+    @Value("${authentication.token.expireTime:30}")
+    private int tokenExpireTime;
+
     @Bean(name = "dataSourceCache")
     public Cache<String, DataSource> dataSourceCache(){
         return Caffeine.newBuilder()
@@ -51,4 +56,13 @@ public class CaffeineConfig {
                 .maximumSize(32)//最大数量
                 .build();
     }
-}
+
+    @Bean(name = "tokenCache")
+    public Cache<String, SysUserDetails> tokenCache() {
+        return Caffeine.newBuilder()
+                .initialCapacity(8)//初始大小
+                .maximumSize(32)//最大数量
+                .expireAfterWrite(tokenExpireTime, TimeUnit.MINUTES)
+                .build();
+    }
+}

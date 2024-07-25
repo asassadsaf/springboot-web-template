@@ -2,11 +2,15 @@ package com.fkp.template.core.handler;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.fkp.template.core.constant.CommonConstant;
+import com.fkp.template.core.constant.RestErrorEnum;
+import com.fkp.template.core.dto.RestSimpleResponse;
+import com.fkp.template.core.exception.RestBusinessException;
 import com.fkp.template.modules.xkip.controller.TestController;
 import com.fkp.template.modules.xkip.dto.request.RequestMetadata;
 import com.fkp.template.modules.xkip.dto.response.ErrorResponse;
 import com.fkp.template.core.exception.BusinessException;
 import com.fkp.template.core.util.LogUtils;
+import com.fkp.template.modules.xkip.dto.response.SimpleRestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +46,19 @@ public class GlobalExceptionHandler {
                 exception.getClass().getName(), requestId, statusCode, errorCode, message, exception);
         response.setStatus(statusCode);
         printOperationLog(handler.getBeanType(), handler.getMethod().getName(), requestId, errorCode, message, request);
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = RestBusinessException.class)
+    public RestSimpleResponse<?> businessException(RestBusinessException exception){
+        String errorCode = exception.getCode();
+        String message = exception.getMessage();
+        RestSimpleResponse<?> errorResponse = RestSimpleResponse.fail(errorCode, message);
+        log.error("GlobalExceptionHandler: " +
+                        "\n-- ExceptionType:{} " +
+                        "\n-- ErrorCode:{} " +
+                        "\n-- ErrorMessage:{}",
+                exception.getClass().getName(), errorCode, message, exception);
         return errorResponse;
     }
 
