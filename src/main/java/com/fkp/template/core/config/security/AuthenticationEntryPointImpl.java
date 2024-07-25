@@ -29,4 +29,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint, S
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
         RestSimpleResponse<Object> data = RestSimpleResponse.fail(RestErrorEnum.AUTHORIZATION_ERROR.getCode(), e.getMessage());
-        ServletUtils.renderString(re
+        ServletUtils.renderString(response, data);
+    }
+}

@@ -63,4 +63,7 @@ public class SpringSecurityConfig {
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 // 添加CORS filter
 //                .addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class)
-//                .addFilterB
+//                .addFilterBefore(corsFilter, LogoutFilter.class)
+                .build();
+    }
+}
