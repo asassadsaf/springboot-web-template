@@ -1,7 +1,9 @@
 package com.fkp.template.core.config.cache;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.fkp.template.core.constant.CommonConstant;
 import com.fkp.template.modules.authentication.entity.SysUserDetails;
+import com.fkp.template.modules.statistic.entity.StatisticCallCount;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -65,4 +69,16 @@ public class CaffeineConfig {
                 .expireAfterWrite(tokenExpireTime, TimeUnit.MINUTES)
                 .build();
     }
-}
+
+    @Bean(name = "callCountMapCache")
+    public Cache<String, Map<String, StatisticCallCount>> callCountMapCache() {
+        Cache<String, Map<String, StatisticCallCount>> cache = Caffeine.newBuilder()
+                // 初始的缓存空间大小
+                .initialCapacity(1)
+                // 缓存的最大条数
+                .maximumSize(1)
+                .build();
+        cache.put(CommonConstant.CALL_COUNT_MAP_CACHE_NAME, new ConcurrentHashMap<>(16));
+        return cache;
+    }
+}

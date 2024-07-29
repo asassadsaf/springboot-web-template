@@ -13,12 +13,19 @@ import com.fkp.template.core.util.LogUtils;
 import com.fkp.template.modules.xkip.dto.response.SimpleRestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Optional;
+
 /**
  * @author fengkunpeng
  * @version 1.0
@@ -86,54 +93,64 @@ public class GlobalExceptionHandler {
         }
     }
 
-//    /**
-//     * 处理bean validation 异常
-//     *
-//     * @param e BindException及其子类对象
-//     * @return 统一返回错误信息
-//     */
-//    @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class})
-//    public BaseResponse<?> validException(BindException e){
-//        StringBuilder sb = new StringBuilder();
-//        try {
-//            for (FieldError error : e.getFieldErrors()) {
-//                log.error("GlobalExceptionHandler -- location:{}#{} -- message:{}",error.getObjectName(),error.getField(),error.getDefaultMessage());
-//                String message = error.getDefaultMessage();
-//                if (StringUtils.isNotBlank(message)) {
-//                    sb.append(message).append(";");
-//                }
-//            }
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//            return BaseResponse.fail(ErrorCodeEnum.GlobalInnerException.getCode(), ErrorCodeEnum.GlobalInnerException.getMsg() + ": " + ex.getMessage());
-//        }
-//        return BaseResponse.fail(ErrorCodeEnum.ValidException.getCode(),sb.toString());
-//    }
-//
-//    /**
-//     * 处理方法参数的校验，类上加@Validate,校验在方法参数上
-//     *
-//     * @param e 异常对象 ConstraintViolationException
-//     * @return 统一返回错误信息
-//     */
-//    @ExceptionHandler(value = {ConstraintViolationException.class})
-//    public ErrorResponse validException2(ConstraintViolationException e){
-//
-//        StringBuilder sb = new StringBuilder();
-//        try {
-//            for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
-//                log.error("GlobalExceptionHandler -- location:{}#{} -- message:{}", violation.getRootBeanClass(), violation.getPropertyPath(),violation.getMessage());
-//                String message = violation.getMessage();
-//                if (StringUtils.isNotBlank(message)) {
-//                    sb.append(message).append(";");
-//                }
-//            }
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//            return BaseResponse.fail(ErrorCodeEnum.GlobalInnerException.getCode(),ErrorCodeEnum.GlobalInnerException.getMsg() + ": " + ex.getMessage());
-//        }
-//        return BaseResponse.fail(ErrorCodeEnum.ValidException.getCode(),sb.toString());
-//    }
+    /**
+     * 处理bean validation 异常
+     *
+     * @param e BindException及其子类对象
+     * @return 统一返回错误信息
+     */
+    @ExceptionHandler(value = {BindException.class, MethodArgumentNotValidException.class})
+    public RestSimpleResponse<?> validException(BindException e){
+        StringBuilder sb = new StringBuilder();
+        try {
+            for (FieldError error : e.getFieldErrors()) {
+                String message = error.getDefaultMessage();
+                message = StringUtils.isNumeric(message) ? Optional.ofNullable(RestErrorEnum.getByCode(message)).orElse(RestErrorEnum.INTERNAL_SERVER_ERROR).getMsg() : message;
+                log.error("GlobalExceptionHandler --location:{}#{} --exceptionClazz: {} --message:{}",error.getObjectName(),error.getField(), e.getClass().getName(), message);
+                if (StringUtils.isNotBlank(message)) {
+                    sb.append(message).append(";");
+                }
+            }
+            int length = sb.length();
+            if(length > 0){
+                sb.deleteCharAt(length - 1);
+            }
+        }catch (Exception ex){
+            log.error("GlobalExceptionHandler internal server error.", e);
+            return RestSimpleResponse.fail(RestErrorEnum.INTERNAL_SERVER_ERROR.getCode(), RestErrorEnum.INTERNAL_SERVER_ERROR.getMsg() + ": " + ex.getMessage());
+        }
+        return RestSimpleResponse.fail(RestErrorEnum.PARAMS_INVALID.getCode(),RestErrorEnum.PARAMS_INVALID.getMsg() + ": " + sb);
+    }
+
+    /**
+     * 处理方法参数的校验，类上加@Validate,校验在方法参数上
+     *
+     * @param e 异常对象 ConstraintViolationException
+     * @return 统一返回错误信息
+     */
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public RestSimpleResponse<?> validException2(ConstraintViolationException e){
+
+        StringBuilder sb = new StringBuilder();
+        try {
+            for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+                String message = violation.getMessage();
+                message = StringUtils.isNumeric(message) ? Optional.ofNullable(RestErrorEnum.getByCode(message)).orElse(RestErrorEnum.INTERNAL_SERVER_ERROR).getMsg() : message;
+                log.error("GlobalExceptionHandler --location:{}#{} --exceptionClazz: {} --message:{}", violation.getRootBeanClass(), violation.getPropertyPath(), e.getClass().getName(), message);
+                if (StringUtils.isNotBlank(message)) {
+                    sb.append(message).append(";");
+                }
+            }
+            int length = sb.length();
+            if(length > 0){
+                sb.deleteCharAt(length - 1);
+            }
+        }catch (Exception ex){
+            log.error("GlobalExceptionHandler internal server error.", e);
+            return RestSimpleResponse.fail(RestErrorEnum.INTERNAL_SERVER_ERROR.getCode(),RestErrorEnum.INTERNAL_SERVER_ERROR.getMsg() + ": " + ex.getMessage());
+        }
+        return RestSimpleResponse.fail(RestErrorEnum.PARAMS_INVALID.getCode(),RestErrorEnum.PARAMS_INVALID.getMsg() + ": " + sb);
+    }
 //
 //    /**
 //     * 业务异常

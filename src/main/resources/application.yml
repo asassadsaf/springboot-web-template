@@ -83,6 +83,8 @@ business:
     verifySchedulingRate: 10
     connectTimeOut: 5000
     minEvictableIdleTimeMillis: 30000
+  statistic:
+    callCountCron: 0/10 * * * * ?
 remote:
   restUrl: https://localhost:7077/test
 

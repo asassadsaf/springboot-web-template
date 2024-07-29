@@ -1,5 +1,6 @@
 package com.fkp.template.core.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fkp.template.core.constant.RestErrorEnum;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,19 @@ public class RestSimpleResponse<T> {
         res.setCode(code);
         res.setMessage(message);
         return res;
+    }
+
+    public static <T> RestSimpleResponse<T> fail(String code, String message, T data){
+        RestSimpleResponse<T> res = new RestSimpleResponse<>();
+        res.setCode(code);
+        res.setMessage(message);
+        res.setData(data);
+        return res;
+    }
+
+    @JsonIgnore
+    public boolean isSuccessStatus(){
+        return CODE_SUCCESS.equals(this.code);
     }
 
 }

@@ -22,4 +22,14 @@ public class RestBusinessException extends RuntimeException{
         super(errorEnum.getMsg(), throwable);
         this.code = errorEnum.getCode();
     }
+
+    public RestBusinessException(String code, String messgae){
+        super(messgae);
+        this.code = code;
+    }
+
+    public RestBusinessException(String code, String messgae, Throwable throwable){
+        super(messgae, throwable);
+        this.code = code;
+    }
 }

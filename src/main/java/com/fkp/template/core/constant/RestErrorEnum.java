@@ -14,6 +14,8 @@ public enum RestErrorEnum {
     CRYPTO_DEVICE_ERROR(CodeConstant.CRYPTO_DEVICE_ERROR_CODE, "Crypto device error"),
     AUTHENTICATION_ERROR(CodeConstant.AUTHENTICATION_ERROR_CODE, "Authentication error."),
     AUTHORIZATION_ERROR(CodeConstant.AUTHORIZATION_ERROR_CODE, "Authentication failed, please login."),
+    PARAMS_INVALID(CodeConstant.PARAMS_INVALID_CODE, "Parameter format error"),
+    INTERNAL_SERVER_ERROR(CodeConstant.INTERNAL_SERVER_ERROR_CODE, "Internal server error."),
 
     DATABASE_INTEGRITY_DB_TYPE_NOT_SUPPORT(CodeConstant.DATABASE_INTEGRITY_DB_TYPE_NOT_SUPPORT_CODE, "Database type not support."),
     DATABASE_INTEGRITY_DB_IP_FORMAT_ERROR(CodeConstant.DATABASE_INTEGRITY_DB_IP_FORMAT_ERROR_CODE, "Database ip format error."),
@@ -54,6 +56,8 @@ public enum RestErrorEnum {
         public static final String CRYPTO_DEVICE_ERROR_CODE = "05000030";
         public static final String AUTHENTICATION_ERROR_CODE = "05000040";
         public static final String AUTHORIZATION_ERROR_CODE = "05000050";
+        public static final String PARAMS_INVALID_CODE = "05000060";
+        public static final String INTERNAL_SERVER_ERROR_CODE = "05000000";
         public static final String DATABASE_INTEGRITY_DB_TYPE_NOT_SUPPORT_CODE = "05235001";
         public static final String DATABASE_INTEGRITY_DB_IP_FORMAT_ERROR_CODE = "05235002";
         public static final String DATABASE_INTEGRITY_DB_PORT_FORMAT_ERROR_CODE = "05235003";

@@ -1,0 +1,1 @@
+delete from storage_database_integrity;

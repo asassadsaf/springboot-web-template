@@ -23,5 +23,8 @@ public class CommonConstant {
     public static final String REQUEST_METADATA_NAME = "requestMetadata";
     public static final String KEY_ID_NAME = "keyId";
     public static final String LOGIN_URL = BASE_URL + "/" + VERSION_V1 + "/authentication/login";
+    public static final String DEFAULT_USERNAME = "default";
+    public static final String DEFAULT_TENANTACCOUNT = "SYSTEMMANAGE";
+    public static final String CALL_COUNT_MAP_CACHE_NAME = "callCountMap";
 
 }
