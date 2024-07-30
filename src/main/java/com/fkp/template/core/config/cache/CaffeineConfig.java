@@ -61,13 +61,12 @@ public class CaffeineConfig {
                 .build();
     }
 
-    @Bean(name = "tokenCache")
-    public Cache<String, SysUserDetails> tokenCache() {
+    @Bean(name = "tokenCacheCaffeine")
+    public Caffeine<Object, Object> tokenCacheCaffeine() {
         return Caffeine.newBuilder()
                 .initialCapacity(8)//初始大小
                 .maximumSize(32)//最大数量
-                .expireAfterWrite(tokenExpireTime, TimeUnit.MINUTES)
-                .build();
+                .expireAfterWrite(tokenExpireTime, TimeUnit.MINUTES);
     }
 
     @Bean(name = "callCountMapCache")
