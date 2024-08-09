@@ -4,6 +4,8 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.fkp.template.core.config.web.MyHttpServletRequestWrapper;
 import com.fkp.template.core.constant.CommonConstant;
+import com.fkp.template.core.constant.RestErrorEnum;
+import com.fkp.template.core.exception.RestBusinessException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -32,6 +34,9 @@ public class HttpClientController {
     @GetMapping(value = "/get")
     public Map<String, Object> get(@RequestParam("name") String name, HttpServletRequest request){
         String token = request.getHeader("token");
+        if("fkp".equals(name)){
+            throw new RestBusinessException(RestErrorEnum.INTERNAL_SERVER_ERROR);
+        }
         return JSONObject.of("token", token, "name", name);
     }
     //POST-urlencoded

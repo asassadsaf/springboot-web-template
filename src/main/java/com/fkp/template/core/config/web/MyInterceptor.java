@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,6 +53,18 @@ public class MyInterceptor implements HandlerInterceptor {
 //        checkDate(requestWrapper);
 //        doAuthroization(authorization, requestWrapper);
         return true;
+    }
+
+    //若目标方法抛出异常则不走这个方法
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        log.info("MyInterceptor postHandler exec.");
+    }
+
+    //无论如何走这个方法
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        log.info("MyInterceptor afterCompletion exec.");
     }
 
     private void checkDate(MyHttpServletRequestWrapper requestWrapper) {
