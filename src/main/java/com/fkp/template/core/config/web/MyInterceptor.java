@@ -43,6 +43,8 @@ public class MyInterceptor implements HandlerInterceptor {
             throw new BusinessException(ErrorCodeEnum.Unauthorized, "request type invalid.");
         }
         MyHttpServletRequestWrapper requestWrapper = (MyHttpServletRequestWrapper) request;
+        // 此时response 的isCommitted()为false可以设置响应头
+        response.addHeader("testHeader", "test");
         //鉴权逻辑
 //        setHeaders2Response(requestWrapper, response);
 //        setParam2RequestAttribute(requestWrapper);
@@ -58,12 +60,14 @@ public class MyInterceptor implements HandlerInterceptor {
     //若目标方法抛出异常则不走这个方法
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // 此时response 的isCommitted()为true不可以设置响应头
         log.info("MyInterceptor postHandler exec.");
     }
 
     //无论如何走这个方法
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // 此时response 的isCommitted()为true不可以设置响应头
         log.info("MyInterceptor afterCompletion exec.");
     }
 

@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author fengkunpeng
  * @version 1.0
@@ -50,6 +52,9 @@ public class StatisticAop {
         if(result instanceof RestSimpleResponse<?>){
             statisticService.recordAkCallCount2Cache(username, ((RestSimpleResponse<?>) result).isSuccessStatus());
         }
+        //在Spring AOP的Around通知的proceed方法后半部分是所有通知类型最后执行的部分，此时response的isCommitted为false，可以设置响应头
+        HttpServletResponse response = ((ServletRequestAttributes) (RequestContextHolder.getRequestAttributes())).getResponse();
+        response.addHeader("testHeaderAop", "test");
         return result;
     }
 

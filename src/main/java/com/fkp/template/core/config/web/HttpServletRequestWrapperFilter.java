@@ -25,5 +25,8 @@ public class HttpServletRequestWrapperFilter extends HttpFilter {
 
         chain.doFilter(myHttpServletRequestWrapper, response);
 
+        //servlet过滤器位于Spring MVC拦截器外层，因此这是response 的isCommitted()也为true，不能设置响应头
+        System.out.println("after doFilter...");
     }
+
 }
