@@ -36,27 +36,6 @@ public class SpringCacheConfig {
         return cacheManager;
     }
 
-//    @Bean
-//    public RedisCacheConfiguration redisCacheConfiguration() {
-//        return RedisCacheConfiguration.defaultCacheConfig()
-//                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-//                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-//                .entryTtl(Duration.ofHours(1));
-//    }
-//
-//    @Bean
-//    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory, RedisCacheConfiguration redisCacheConfiguration) {
-//        return RedisCacheManager.builder(redisConnectionFactory)
-//                .cacheDefaults(redisCacheConfiguration)
-//                .build();
-//    }
-//
-//    @Bean
-//    public CacheManager cacheManager(CaffeineCacheManager caffeineCacheManager, RedisCacheManager redisCacheManager) {
-//        return new CompositeCacheManager(caffeineCacheManager, redisCacheManager);
-//    }
-
-
     @Bean
     public CacheErrorHandler errorHandler() {
         return new SimpleCacheErrorHandler();

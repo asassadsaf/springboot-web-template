@@ -52,6 +52,68 @@ spring:
       continue-on-error: false
       # sql脚本编码
       encoding: UTF-8
+#   redis 配置项
+  redis:
+    # 连接URL，配置后会覆盖host、port等配置，eg: redis://user:password@example.com:6379
+#    url: redis://user:password@example.com:6379
+    # redis server ip
+    host: 10.0.104.78
+    # redis server port
+    port: 6379
+    # 连接工厂使用的数据库索引（0-15），默认为0
+    database: 0
+    # Redis服务器连接用户
+#    username: test
+    # Redis服务器连接密码（默认为空）
+#    password: test
+    # 是否启用SSL支持
+    ssl: false
+    # 读取超时
+    timeout: 5000
+    # 连接超时
+    connect-timeout: 10000
+    # 在与CLIENT SETNAME的连接上设置的客户端名称
+    client-name: test
+    # 要使用的客户端类型。默认情况下，根据类路径自动检测
+    client-type: lettuce
+#    # Redis哨兵属性
+#    sentinel:
+#      # Redis服务器名称
+#      master: test
+#      # 哨兵节点，以逗号分隔的“ host：port”对列表
+#      nodes: xxxx
+#      # 用于使用哨兵进行身份验证的密码
+#      password: test
+#    # 集群属性
+#    cluster:
+#      # 以逗号分隔的“ host：port”对列表，这表示集群节点的“初始”列表，并且要求至少具有一个条目
+#      nodes: xxxx
+#      # 在集群中执行命令时要遵循的最大重定向数
+#      max-redirects: 1
+#      refresh:
+#        # 拓扑动态感应即客户端能够根据 redis cluster 集群的变化，动态改变客户端的节点情况，完成故障转移。
+#        adaptive: true
+#        # 是否发现和查询所有群集节点以获取群集拓扑。设置为false时，仅将初始种子节点用作拓扑发现的源
+#        dynamic-refresh-sources: false
+#        # 集群拓扑刷新周期
+#        period: 1000
+    # 连接池配置
+    lettuce:
+      pool:
+        # 连接池池中“空闲”连接的最大数量。使用负值表示无限数量的空闲连接，默认为8
+        max-idle: 8
+        # 中维护的最小空闲连接数，默认为0
+        min-idle: 0
+        # 连接池可以分配的最大连接数。使用负值表示没有限制，默认为8
+        max-active: 8
+        # 当连接池耗尽时，在抛出异常之前，连接分配应阻塞的最长时间。使用负值无限期等待，默认为-1
+        max-wait: -1
+        # 空闲连接从运行到退出的时间间隔。当为正时，空闲连接回收线程启动，否则不执行空闲连接回收
+        time-between-eviction-runs: -1
+        # 宕机超时时间，默认100ms
+        shutdown-timeout: 100
+
+
 
 server:
   ssl:

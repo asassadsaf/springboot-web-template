@@ -49,7 +49,7 @@ public class CryptoTest {
     @Test
     void testHmacSm3(){
         byte[] keyBlob = Base64.decodeBase64("jGL0p/PXATUaTlmm+yrT8/hkeqMi1OVyT8Ab9gFb+Q4=");
-        byte[] plainBlob = "SWXA1234@DAR_Mwqewqewqeysql".getBytes();
+        byte[] plainBlob = "SWXA1234@DAR_Mwqewdsfsddfsqewqeysql".getBytes();
         Mac mac = Mac.getInstance("HMACSM3", BouncyCastleProvider.PROVIDER_NAME);
         Key keySpec = new SecretKeySpec(keyBlob, "HMACSM3");
         mac.init(keySpec);
