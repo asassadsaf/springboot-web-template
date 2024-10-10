@@ -128,8 +128,8 @@ spring:
         core-size: 8
         # 是否允许核心线程超时回收
         allow-core-thread-timeout: true
-        # 线程空闲时间超过该时间则会被回收
-        keep-alive: 60
+        # 线程空闲时间超过该时间则会被回收,Duration类型可以通过时间字符串自动转换
+        keep-alive: 60s
 
 server:
   ssl:

@@ -79,4 +79,18 @@ public class HttpClientController {
         return JSON.parseObject(jsonParam);
     }
 
+    @PostMapping(value = "/structure")
+    public Map<String, Object> structure(@RequestBody Map<String, Object> param){
+        for (Map.Entry<String, Object> entry : param.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if(value instanceof Map){
+                log.info("Map: key: {}, value: {}", key, value);
+            }else {
+                log.info("singleton: key: {}, value: {}", key, value);
+            }
+        }
+        return param;
+    }
+
 }
