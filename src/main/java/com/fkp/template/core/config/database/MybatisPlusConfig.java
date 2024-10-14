@@ -26,10 +26,10 @@ public class MybatisPlusConfig {
         return interceptor;
     }
 
-    @Bean
-    public MyIdentifierGenerator myIdentifierGenerator(){
-        return new MyIdentifierGenerator();
-    }
+//    @Bean
+//    public MyIdentifierGenerator myIdentifierGenerator(){
+//        return new MyIdentifierGenerator();
+//    }
 
     @Bean
     public MybatisFieldFillHandler mybatisFieldFillHandler(){

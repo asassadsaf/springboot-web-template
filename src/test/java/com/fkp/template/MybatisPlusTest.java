@@ -1,6 +1,10 @@
 package com.fkp.template;
 
+import com.baomidou.mybatisplus.core.toolkit.Sequence;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fkp.template.core.util.StrIdGenerator;
+import com.fkp.template.modules.app.entity.SysApp;
+import com.fkp.template.modules.app.mapper.SysAppMapper;
 import com.fkp.template.modules.dbintegrity.entity.DatabaseIntegrity;
 import com.fkp.template.modules.dbintegrity.mapper.DatabaseIntegrityMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +26,24 @@ public class MybatisPlusTest {
 
     @Autowired
     private DatabaseIntegrityMapper databaseIntegrityMapper;
+
+    @Autowired
+    private SysAppMapper sysAppMapper;
+
+    @Test
+    void testSysApp(){
+        int insert = sysAppMapper.insert(SysApp.builder().name("fkp2").age(25).addr("jinan").build());
+        log.info("insert sys app res: {}", insert);
+        List<SysApp> sysApps = sysAppMapper.selectList(Wrappers.emptyWrapper());
+        log.info("select sys_app table list res: {}", sysApps);
+    }
+
+    @Test
+    void testMybatisPlusIdGenerator(){
+        Sequence sequence = new Sequence(null);
+        System.out.println(String.valueOf(sequence.nextId()));
+        System.out.println(String.valueOf(sequence.nextId()).length());
+    }
 
     @Test
     void testSelect(){

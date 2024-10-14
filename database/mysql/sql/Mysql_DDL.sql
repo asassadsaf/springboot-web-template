@@ -41,3 +41,16 @@ CREATE UNIQUE INDEX `dimension_unique` ON `statistic_call_count`
      `dimension`,
      `tenant_account`
 );
+
+create table sys_app
+(
+    id          varchar(64)  not null,
+    name        varchar(32)  not null,
+    age         int          null,
+    addr        varchar(128) null,
+    create_date datetime     null,
+    constraint user_pk
+        primary key (id)
+);
+
+create unique index user_name_unique_index on sys_app (name);
