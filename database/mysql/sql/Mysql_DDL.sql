@@ -25,19 +25,19 @@ CREATE TABLE `storage_database_integrity`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
-DROP TABLE IF EXISTS "statistic_call_count";
-CREATE TABLE "statistic_call_count"
+DROP TABLE IF EXISTS `statistic_call_count`;
+CREATE TABLE `statistic_call_count`
 (
-    "id"             text(32) NOT NULL,
-    "dimension"      text(64) NOT NULL,
-    "success_num"    integer NOT NULL,
-    "fail_num"       integer NOT NULL,
-    "total_num"      integer NOT NULL,
-    "tenant_account" text(64) NOT NULL,
-    PRIMARY KEY ("id")
+    `id`             varchar(32) NOT NULL,
+    `dimension`      varchar(64) NOT NULL,
+    `success_num`    integer     NOT NULL,
+    `fail_num`       integer     NOT NULL,
+    `total_num`      integer     NOT NULL,
+    `tenant_account` varchar(64) NOT NULL,
+    PRIMARY KEY (`id`)
 );
-CREATE UNIQUE INDEX "dimension_unique" ON "statistic_call_count"
+CREATE UNIQUE INDEX `dimension_unique` ON `statistic_call_count`
 (
-    "dimension" ASC,
-    "tenant_account" ASC
+     `dimension`,
+     `tenant_account`
 );
