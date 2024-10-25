@@ -4,6 +4,13 @@ import com.fkp.template.core.util.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scripting.support.ResourceScriptSource;
+
+import java.util.Collections;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author fengkunpeng
@@ -16,6 +23,9 @@ public class RedisTest {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Test
     void test(){
@@ -38,5 +48,20 @@ public class RedisTest {
         System.out.println(persistValue);
         long persistAfterTimeValue = redisUtils.getTime("name");
         System.out.println(persistAfterTimeValue);
+    }
+
+    @Test
+    void testTemplate(){
+        redisTemplate.opsForValue().set("age", "25");
+        Object age = redisTemplate.opsForValue().get("age");
+        System.out.println(age + age.getClass().getName());
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setResultType(Long.class);
+        script.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/unLock.lua")));
+        Object res = redisTemplate.execute(script, Collections.singletonList("age"), "25");
+        System.out.println(res);
+        System.out.println(redisTemplate.opsForValue().get("age"));
+//        System.out.println(age);
+//        System.out.println(redisTemplate.delete("age"));
     }
 }

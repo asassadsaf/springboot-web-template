@@ -1,6 +1,11 @@
 package com.fkp.template;
 
+import cn.hutool.core.util.ByteUtil;
 import cn.hutool.crypto.symmetric.fpe.FPE;
+import com.kms.util.crypto.CryptoParameter;
+import com.kms.util.crypto.CryptoUtils;
+//import com.sansec.jcajce.provider.asymmetric.sm2.JCESM2PublicKey;
+//import com.sansec.jce.provider.SwxaProvider;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -17,10 +22,10 @@ import javax.crypto.Mac;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.SecureRandom;
-import java.security.Security;
+import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
 /**
  * @author fengkunpeng
@@ -161,5 +166,86 @@ public class CryptoTest {
         engine.processBlock(ciphertextBytes, 0, ciphertextBytes.length, plaintextBytes, 0);
 
         return new String(plaintextBytes, StandardCharsets.UTF_8);
+    }
+
+    @SneakyThrows
+    @Test
+    void testEncDec(){
+//        Security.addProvider(new SwxaProvider(null, null));
+        System.setProperty("SANSEC.SSL", "TRUE");
+//        KeyPairGenerator generator;
+//        generator = KeyPairGenerator.getInstance("SM2", "SwxaJCE");
+//        KeyPair keyPair = generator.generateKeyPair();
+//        PublicKey publicKey = keyPair.getPublic();
+//        PrivateKey privateKey = keyPair.getPrivate();
+//        String publicKeyStr = Base64.encodeBase64String(publicKey.getEncoded());
+//        String privateKeyStr = Base64.encodeBase64String(privateKey.getEncoded());
+//        System.out.println(publicKeyStr);
+//        System.out.println(privateKeyStr);
+//        String textData = "swxa1234.";
+//        String pubKeyStr = "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAE8yyTHHqI6r+2MfZJqiQa9WFh08s9c01iWJrRHCswrjCleWMMYFf5b8t3w+ztBtXu4y5W6xNC0AY3vzGpmj83gQ==";
+//        String cipher2 = CryptoUtils.asyEnc(pubKeyStr, Base64.encodeBase64String(textData.getBytes(StandardCharsets.UTF_8)), new CryptoParameter("SM2"));
+//        System.out.println(cipher2);
+//        String priKeyStr = "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQIgTMdvuY/NNFCetM8Hf4+fxhxJaqJMqDuVE+QvMct/98KgCgYIKoEcz1UBgi2hRANCAATzLJMceojqv7Yx9kmqJBr1YWHTyz1zTWJYmtEcKzCuMKV5YwxgV/lvy3fD7O0G1e7jLlbrE0LQBje/MamaPzeB";
+//        String cipher = "BLc2kBPa6PdTAssKk207AUsevSiTJumO6ftnoNgS/OTXJtwwEwDCtW+CYgpBIV61SzPKNIYl58R05mqAW3BOgU9dFc8Eqw49p7cjrG3cawMk8iMSSL7eFTFqeuMO3h/LZBVwB7vTf0y4rw2nDQ==";
+//        String plain = CryptoUtils.asyDec(priKeyStr, cipher2, new CryptoParameter("SM2"));
+//        System.out.println(plain);
+//        System.out.println(new String(Base64.decodeBase64(plain), StandardCharsets.UTF_8));
+//        byte[] gmPubKey = Hex.decodeHex("9C2E943A092CFDC319CBAC86C29F7C43A22ADB8B76DD06FAD0D625A623FD028B5213D7E65550AD50BCCCE2613020EB82D91E9DF75A47A4F59AD4E18DE6800732");
+//        byte[] bytes = CryptoUtils.convertSM2PublicToAsn1(gmPubKey);
+//        System.out.println(Base64.encodeBase64String(bytes));
+
+//        String pubKeyStr = "04820ea64465de6de616686109bcabd69cba7822811a5621afbd72202b72a6914d3fcf02ffbe90282e2774c98cd2814d3bd980a8c473d4e60a2f8ecd17b6e4e231";
+//        System.out.println(Arrays.toString(Hex.decodeHex(pubKeyStr)));
+//        System.out.println(Base64.encodeBase64String(Hex.decodeHex(pubKeyStr)));
+//        System.out.println(Arrays.toString();
+//        System.out.println(Base64.decodeBase64("MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAE8yyTHHqI6r+2MfZJqiQa9WFh08s9c01iWJrRHCswrjCleWMMYFf5b8t3w+ztBtXu4y5W6xNC0AY3vzGpmj83gQ=="));
+//        byte[] key = Hex.decodeHex("9C2E943A092CFDC319CBAC86C29F7C43A22ADB8B76DD06FAD0D625A623FD028B5213D7E65550AD50BCCCE2613020EB82D91E9DF75A47A4F59AD4E18DE6800732");
+//        System.out.println(ByteUtil.bytesToInt(Arrays.copyOfRange(key, 0, 4)));
+
+//        String bcPubKeyStr = "3b31359db5bc67dabbdb5ebc39ec4905746a1fa7e70bac0a40dabc7e1a7010870136b01b9e972c6b3ab00c17fdf34bf8fde830865c236f3a71b6b031d7863b86";
+//        String bcPriKeyStr = "b7d621fb4b41f9c3c2ca94f4ed99038371b003a75d7e0ed7f5ca7aae8ad9a84e";
+//
+//        byte[] bytes = CryptoUtils.convertSM2PublicToAsn1(Hex.decodeHex(bcPubKeyStr));
+//        byte[] bytes1 = CryptoUtils.convertSM2PrivateToAsn1(Hex.decodeHex(bcPriKeyStr), Hex.decodeHex(bcPubKeyStr));
+//        System.out.println(Base64.encodeBase64String(bytes));
+//        System.out.println(Base64.encodeBase64String(bytes1));
+//
+//        System.out.println(Base64.encodeBase64String(CryptoUtils.convertSM2PublicToGM(bytes)));
+//        System.out.println(Base64.encodeBase64String(CryptoUtils.convertSM2PrivateToGM(bytes1)));
+//
+//        System.out.println(Hex.encodeHexString(CryptoUtils.convertSM2PublicToGM(bytes)));
+//        System.out.println(Hex.encodeHexString(CryptoUtils.convertSM2PrivateToGM(bytes1)));
+//
+//        System.out.println(CryptoUtils.convertSM2PublicToGM(bytes).length);
+//        System.out.println(CryptoUtils.convertSM2PrivateToGM(bytes1).length);
+
+//        byte[] gmPubKey = CryptoUtils.convertSM2PublicToGM(Base64.decodeBase64(pubKeyStr));
+//        byte[] gmPriKey = CryptoUtils.convertSM2PrivateToGM(Base64.decodeBase64(priKeyStr));
+//        System.out.println(Arrays.toString(gmPubKey));
+//        System.out.println(Arrays.toString(gmPriKey));
+//        System.out.println(Hex.encodeHexString(gmPubKey));
+//        System.out.println(Hex.encodeHexString(gmPriKey));
+//        X509EncodedKeySpec spec = new X509EncodedKeySpec(Base64.decodeBase64(pubKeyStr));
+//        KeyFactory keyFactory = KeyFactory.getInstance("SM2", "SwxaJCE");
+//        JCESM2PublicKey publicKey = (JCESM2PublicKey) keyFactory.generatePublic(spec);
+//        System.out.println(publicKey);
+//        System.out.println(publicKey.getW().getAffineX().toString(16));
+//        System.out.println(publicKey.getW().getAffineY().toString(16));
+//        System.out.println();
+//        String cipher = "2265afb1b412fa834b86d4049760b25942f0e6a3dc302cd881fdb2ae1fcc89c99370ed22ac09fc5dad5cd0dd84eaf76b5ffaa0018859a2ab028387c66d07e1959d48c92f38c205b28c1c6536a51b6bde839c77bd85d3d3e716d839e7bef05937e49fe5d555d945ad6a";
+//        String cipher = "7D12050E36990468C0967DA77DCA6D0F7B2FAA69A1E0A2536E689DA0990962BA0D9ACDDD0B87DF2E83FDCC34562F51DDDE264F53399EDF52DAE2D045BD2152EB084D5EB9FB05D59D605569C843B00327F408797783D4FB2231B694A8D8DEAD574E2C12AB3026C026C4";
+//        byte[] bytes = CryptoUtils.convertSM2CipherToASN1(Hex.decodeHex(cipher));
+//        byte[] bcCipher = Hex.decodeHex(cipher);
+//        byte[] bytes = CryptoUtils.convertSM2CipherToASN1(CryptoUtils.convertBCSM2CipherToGM(bcCipher, bcCipher.length - 96));
+//        System.out.println(Base64.encodeBase64String(bytes));
+//        String s = CryptoUtils.asyDec(priKeyStr, Base64.encodeBase64String(bytes), new CryptoParameter("SM2"));
+//        System.out.println(new String(Base64.decodeBase64(s), StandardCharsets.UTF_8));
+
+        String xyPubKeyStr = "e63ac7c49d64924d2aea425e2aa76824af67ff5633ff6fea69fba6fd2bd5db06d0b6d7815a9d47b01e8fe9f2ae169e711f11771a422163a4f2ce87d79f76cae2";
+        byte[] bytes = CryptoUtils.convertSM2PublicToAsn1(Hex.decodeHex(xyPubKeyStr));
+        byte[] bytes1 = CryptoUtils.asyEnc(bytes, "swxa1234.".getBytes(StandardCharsets.UTF_8), new CryptoParameter("SM2"));
+        System.out.println(Hex.encodeHexString(CryptoUtils.convertGMSM2CipherToBC(CryptoUtils.convertSM2CipherTo0018(bytes1))));
+//        System.out.println(Base64.encodeBase64String(bytes));
     }
 }
