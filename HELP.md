@@ -84,37 +84,40 @@ root_path<br/>
 ## 通过上下文对象选取接口的实现类
 
 ## SpringBoot开启并使用@Scheduled定时任务
-
+1ca57efa
 ## 在Runnable接口实现类中使用Spring声明式事务，Bean的原型模式
-
+1ca57efa
 ## SpringBoot手动提交回滚事务
-
+1ca57efa
 ## 定时任务实现在条件成立的情况下自己取消
-
+1ca57efa
 ## 手动使用Druid连接池管理获取数据库连接并进行jdbc操作
-
+1ca57efa
 ## Druid连接池中连接的关闭机制以及连接池的关闭机制
-
+1ca57efa
 ## DruidDataSource加入以及逐出缓存的实际，使用双重检查锁机制避免重复加入缓存并减少性能损耗
-
+1ca57efa
 ## IOUtils不关闭流使用注意
-
+a8a632b5
 ## 加权随机算法实现选择概率问题
-
+7e7d2c1e
 ## 使用SpringSecurity实现认证和鉴权
-
+a1422edd 63a22d5b
 ## 接口调用次数统计功能
-
+b4c232e7
 ## 本地缓存集成到Spring Cache
-
+24e967d0
 ## Spring MVC拦截器抛出异常的场景
-
+586edff8
 ## 手动设置Http响应头的时机以及HttpServletResponse类的isCommitted方法
-
+f027cd59
 ## 引入Redis及其配置，执行lua脚本
-
+77431423 c757b964
 ## SpringBoot定时任务和线程池配置
-
+9e775a60 80b29fc6
 ## 子类使用父类属性是注入属性示例
-
+3eb20474
 ## Socket使用tls双向认证示例
+f2126259
+## 将SpringBoot项目打成胖包直接引入到其他项目中
+c757b964
