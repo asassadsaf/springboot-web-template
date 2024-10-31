@@ -6,6 +6,7 @@ import com.kms.util.crypto.CryptoParameter;
 import com.kms.util.crypto.CryptoUtils;
 //import com.sansec.jcajce.provider.asymmetric.sm2.JCESM2PublicKey;
 //import com.sansec.jce.provider.SwxaProvider;
+import com.sansec.jce.provider.SwxaProvider;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -171,7 +172,7 @@ public class CryptoTest {
     @SneakyThrows
     @Test
     void testEncDec(){
-//        Security.addProvider(new SwxaProvider(null, null));
+        Security.addProvider(new SwxaProvider(null, null));
         System.setProperty("SANSEC.SSL", "TRUE");
 //        KeyPairGenerator generator;
 //        generator = KeyPairGenerator.getInstance("SM2", "SwxaJCE");
@@ -242,7 +243,7 @@ public class CryptoTest {
 //        String s = CryptoUtils.asyDec(priKeyStr, Base64.encodeBase64String(bytes), new CryptoParameter("SM2"));
 //        System.out.println(new String(Base64.decodeBase64(s), StandardCharsets.UTF_8));
 
-        String xyPubKeyStr = "e63ac7c49d64924d2aea425e2aa76824af67ff5633ff6fea69fba6fd2bd5db06d0b6d7815a9d47b01e8fe9f2ae169e711f11771a422163a4f2ce87d79f76cae2";
+        String xyPubKeyStr = "0732039467d29e35cca437bdecbeb9a867301c66e4f7e94e2167270360da9343f77fd3c63d1571d8f601c5505137c1a55deef2d62bc8756e2db14a0a1e1859f0";
         byte[] bytes = CryptoUtils.convertSM2PublicToAsn1(Hex.decodeHex(xyPubKeyStr));
         byte[] bytes1 = CryptoUtils.asyEnc(bytes, "swxa1234.".getBytes(StandardCharsets.UTF_8), new CryptoParameter("SM2"));
         System.out.println(Hex.encodeHexString(CryptoUtils.convertGMSM2CipherToBC(CryptoUtils.convertSM2CipherTo0018(bytes1))));

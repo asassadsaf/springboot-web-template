@@ -11,10 +11,12 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -32,17 +34,23 @@ public class SslClientTest {
         String serverKeyStorePath = certsDir + "pt_rsa_sign_client.pfx";
         String serverTrustKeyStorePath = certsDir + "rsa2048-sign.cer";
         SSLSocketFactory sslSocketFactory = SocketUtils.genSslSocketFactory(serverKeyStorePath, "swxa@2024", serverTrustKeyStorePath);
-        try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket("127.0.0.1", 9000);
-             OutputStream outputStream = socket.getOutputStream()){
-            Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNext()){
-                String next = scanner.next();
-                if("0".equals(next)){
-                    break;
+        try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket()){
+            socket.connect(new InetSocketAddress("127.0.0.1", 9000));
+            socket.startHandshake();
+            // jdk8 connect success. protocol: [TLSv1, TLSv1.1, TLSv1.2]
+            // jdk17 connect success. protocol: [TLSv1.2, TLSv1.3]
+            System.out.println("connect success. protocol: " + Arrays.toString(socket.getEnabledProtocols()));
+            try (OutputStream outputStream = socket.getOutputStream()){
+                Scanner scanner = new Scanner(System.in);
+                while (scanner.hasNext()){
+                    String next = scanner.next();
+                    if("0".equals(next)){
+                        break;
+                    }
+                    System.out.println(next);
+                    outputStream.write(next.getBytes());
+                    outputStream.flush();
                 }
-                System.out.println(next);
-                outputStream.write(next.getBytes());
-                outputStream.flush();
             }
         }
     }
