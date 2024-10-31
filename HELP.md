@@ -117,7 +117,9 @@ f027cd59
 9e775a60 80b29fc6
 ## 子类使用父类属性是注入属性示例
 3eb20474
-## Socket使用tls双向认证示例
-f2126259
+## Socket使用tls双向认证示例，TLS版本和jdk版本关系
+f2126259  3d31a5bb
 ## 将SpringBoot项目打成胖包直接引入到其他项目中
 c757b964
+## 获取类的泛型类型、Fastjson反序列化带泛型的类的对象和TypeReference实现
+3d31a5bb
