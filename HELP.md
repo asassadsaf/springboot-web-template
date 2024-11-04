@@ -122,4 +122,4 @@ f2126259  3d31a5bb
 ## 将SpringBoot项目打成胖包直接引入到其他项目中
 c757b964
 ## 获取类的泛型类型、Fastjson反序列化带泛型的类的对象和TypeReference实现
-3d31a5bb
+3d31a5bb  ab4319e7
