@@ -2,6 +2,12 @@ package com.fkp.template;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.baomidou.mybatisplus.core.toolkit.Sequence;
+import com.fkp.template.core.dto.RestSimpleResponse;
+import com.fkp.template.modules.app.entity.SysApp;
+import com.fkp.template.modules.dbintegrity.entity.DatabaseIntegrity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -106,9 +112,81 @@ public class FastJsonTest {
         System.out.println(parameterizedType4.getOwnerType());
     }
 
+    @Test
+    void testConvertObj(){
+        SysApp sysApp = SysApp.builder().name("fkp").age(25).addr("jinan").createDate(new Date()).id(String.valueOf(DefaultIdentifierGenerator.getInstance().nextId(null))).build();
+        String sysAppJsonStr = JSON.toJSONString(sysApp);
+        System.out.println(sysAppJsonStr);
+        String convertStrRes = convertObj(sysAppJsonStr, String.class);
+        System.out.println(convertStrRes);
+        SysApp convertSysAppRes = convertObj(sysAppJsonStr, SysApp.class);
+        System.out.println(convertSysAppRes);
+        // 丢失泛型
+        List convertListRes = convertObj(sysAppJsonStr, List.class);
+        System.out.println(convertListRes);
+
+        System.out.println("=========================================================================");
+
+        String convertStrRes2 = convertObj(sysAppJsonStr, new TypeReference<String>() {});
+        System.out.println(convertStrRes2);
+        // 保留泛型
+        List<SysApp> convertListRes2 = convertObj(sysAppJsonStr, new TypeReference<List<SysApp>>() {});
+        System.out.println(convertListRes2);
+    }
+
+    @Test
+    void testTypeReferenceDeserialize(){
+        // 测试List<SysApp>类型的jsonStr反序列化为List<DatabaseIntegrity>类型
+        SysApp sysApp = SysApp.builder().name("fkp").age(25).addr("jinan").createDate(new Date()).id(String.valueOf(DefaultIdentifierGenerator.getInstance().nextId(null))).build();
+        String sysAppJsonStr = JSON.toJSONString(sysApp);
+        System.out.println(sysAppJsonStr);
+        // 不会报错，会将存在的字段做对应
+        List<DatabaseIntegrity> databaseIntegrityList = JSON.parseObject(sysAppJsonStr, new TypeReference<List<DatabaseIntegrity>>() {});
+        System.out.println(databaseIntegrityList);
+    }
+
+    /**
+     * 结论同testTypeReferenceDeserialize，通过TypeReference指定泛型类型时，若不匹配不会报错，只是将对应的属性做对应
+     */
+    @Test
+    void testRestResponseDeserialize(){
+        SysApp sysApp = SysApp.builder().name("fkp").age(25).addr("jinan").createDate(new Date()).id(String.valueOf(DefaultIdentifierGenerator.getInstance().nextId(null))).build();
+        RestSimpleResponse<SysApp> restSimpleResponse = RestSimpleResponse.success(sysApp);
+        String responseJsonStr = JSON.toJSONString(restSimpleResponse);
+        System.out.println(responseJsonStr);
+        // 反序列化为RestSimpleResponse<SysApp>
+        RestSimpleResponse<SysApp> deserializeSysAppResp = JSON.parseObject(responseJsonStr, new TypeReference<RestSimpleResponse<SysApp>>() {});
+        System.out.println(deserializeSysAppResp);
+        // 反序列化为RestSimpleResponse<DatabaseIntegrity>
+        RestSimpleResponse<DatabaseIntegrity> deserializeDatabaseIntegrityResp = JSON.parseObject(responseJsonStr, new TypeReference<RestSimpleResponse<DatabaseIntegrity>>() {});
+        System.out.println(deserializeDatabaseIntegrityResp);
+        // 反序列化为RestSimpleResponse<String>
+        RestSimpleResponse<String> deserializeStrResp = JSON.parseObject(responseJsonStr, new TypeReference<RestSimpleResponse<String>>() {});
+        System.out.println(deserializeStrResp);
+
+        String data = "fkp";
+        RestSimpleResponse<String> noJsonDataResp = RestSimpleResponse.success(data);
+        System.out.println(noJsonDataResp);
+        String noJsonDataRespJsonStr = JSON.toJSONString(noJsonDataResp);
+        System.out.println(noJsonDataRespJsonStr);
+        RestSimpleResponse<String> convertNoJsonDataResp = JSON.parseObject(noJsonDataRespJsonStr, new TypeReference<RestSimpleResponse<String>>() {});
+        System.out.println(convertNoJsonDataResp);
+
+
+    }
+
 
     private <T> T convertObj(String jsonStr, Class<T> clazz){
+        if(!JSON.isValid(jsonStr)){
+            throw new IllegalArgumentException("jsonStr is not json format. jsonStr: " + jsonStr);
+        }
+        return JSON.parseObject(jsonStr, clazz);
+    }
 
-       return null;
+    private <T> T convertObj(String jsonStr, TypeReference<T> tTypeReference){
+        if(!JSON.isValid(jsonStr)){
+            throw new IllegalArgumentException("jsonStr is not json format. jsonStr: " + jsonStr);
+        }
+        return JSON.parseObject(jsonStr, tTypeReference);
     }
 }
