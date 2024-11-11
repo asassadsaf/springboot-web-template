@@ -123,3 +123,9 @@ f2126259  3d31a5bb
 c757b964
 ## 获取类的泛型类型、Fastjson反序列化带泛型的类的对象和TypeReference实现
 3d31a5bb  ab4319e7
+## fastjson序列化反序列化首字母大小写转换
+1f4d2e8f
+## HMACSM3 运算
+1f4d2e8f
+## 数据库主键或以为索引冲突引发的异常类型
+1f4d2e8f
