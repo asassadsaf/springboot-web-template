@@ -104,7 +104,12 @@ public class MybatisPlusTest {
         }
         List<SysApp> sysApps = sysAppMapper.selectList(Wrappers.lambdaQuery(SysApp.class).eq(SysApp::getName, "fkpfkpfkp"));
         System.out.println(sysApps);
+    }
 
+    @Test
+    void testTableFieldExistFalse(){
+        List<SysApp> sysApps = sysAppMapper.selectList(Wrappers.emptyWrapper());
+        System.out.println(sysApps);
     }
 
     private String getInvalidAttrName(BadSqlGrammarException e){

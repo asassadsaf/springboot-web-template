@@ -23,21 +23,25 @@ import java.security.cert.CertificateFactory;
  * @date 2024/10/25 15:05
  */
 public class CertUtils {
+
+//    private static final String PROVIDE_NAME = "SwxaJCE";
+    private static final String PROVIDE_NAME = BouncyCastleProvider.PROVIDER_NAME;
+
     private CertUtils(){}
 
     public static KeyStore genKeyStoreByPkcs12(String filePath, String pwd) throws KeyStoreException, NoSuchProviderException, CertificateException, IOException, NoSuchAlgorithmException {
         try (InputStream in = Files.newInputStream(Paths.get(filePath))){
-            KeyStore keyStore = KeyStore.getInstance("PKCS12", BouncyCastleProvider.PROVIDER_NAME);
+            KeyStore keyStore = KeyStore.getInstance("PKCS12", PROVIDE_NAME);
             keyStore.load(in, pwd.toCharArray());
             return keyStore;
         }
     }
 
-    public static KeyStore genKeyStoreByX509Pem(String filePath) throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException {
+    public static KeyStore genKeyStoreByX509Pem(String filePath) throws KeyStoreException, CertificateException, IOException, NoSuchAlgorithmException, NoSuchProviderException {
         try (InputStream in = Files.newInputStream(Paths.get(filePath))){
-            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType(), PROVIDE_NAME);
             keyStore.load(null, null);
-            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509", PROVIDE_NAME);
             Certificate certificate = certificateFactory.generateCertificate(in);
             keyStore.setCertificateEntry("root-ca", certificate);
             return keyStore;

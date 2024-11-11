@@ -43,7 +43,7 @@ spring:
   sql:
     init:
       # ALWAYS、EMBEDDED(嵌入数据库才执行)、NEVER
-      mode: NEVER
+      mode: always
       # ddl脚本路径
       schema-locations: "file:${application.path}/database/sqlite3/sql/sqlite3_DDL.sql"
       # dml脚本路径

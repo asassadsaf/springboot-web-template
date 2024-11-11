@@ -4,10 +4,10 @@ server:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-#    url: "jdbc:sqlite:${application.path}/database/sqlite3/core/sqlite3.db"
-#    driver-class-name: org.sqlite.JDBC
-    url: jdbc:mysql://10.0.104.78:3306/service_test
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:sqlite:${application.path}/database/sqlite3/core/sqlite3.db"
+    driver-class-name: org.sqlite.JDBC
+#    url: jdbc:mysql://10.0.104.78:3306/service_test
+#    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: SWXA1234@DAR_Mysql
     druid:
