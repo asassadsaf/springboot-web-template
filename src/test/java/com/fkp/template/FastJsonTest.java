@@ -1,7 +1,7 @@
 package com.fkp.template;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.TypeReference;
+import com.alibaba.fastjson2.*;
+import com.alibaba.fastjson2.filter.NameFilter;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
@@ -188,5 +188,32 @@ public class FastJsonTest {
             throw new IllegalArgumentException("jsonStr is not json format. jsonStr: " + jsonStr);
         }
         return JSON.parseObject(jsonStr, tTypeReference);
+    }
+
+
+    /**
+     * 将对象首字母小写的属性序列化为jsonStr的key首字母为大写
+     * 将jsonStr的首字母大写的key映射到对象首字母小写的属性中
+     */
+    @Test
+    void testUpCaseDeserialize(){
+        SysApp sysApp = SysApp.builder().name("fkp").age(25).addr("jinan").createDate(new Date()).id(String.valueOf(DefaultIdentifierGenerator.getInstance().nextId(null))).build();
+        String upcaseJson = JSON.toJSONString(sysApp, NameFilter.of(PropertyNamingStrategy.PascalCase));
+        // {"Addr":"jinan","Age":25,"CreateDate":"2024-11-11 10:23:25","Id":"1855798454814416898","Name":"fkp"}
+        System.out.println(upcaseJson);
+
+        JSONObject jsonObject = JSON.parseObject(upcaseJson);
+        // {"Addr":"jinan","Age":25,"CreateDate":"2024-11-11 10:23:25","Id":"1855798454814416898","Name":"fkp"}
+        System.out.println(jsonObject);
+
+        // 使用JSONReader.Feature.SupportSmartMatch，可以将jsonStr的首字母大写的key映射到对象首字母小写的属性中
+        SysApp javaObject = jsonObject.toJavaObject(SysApp.class, JSONReader.Feature.SupportSmartMatch);
+        // SysApp(id=1855798454814416898, name=fkp, age=25, addr=jinan, remark=null, createDate=Mon Nov 11 10:23:25 CST 2024)
+        System.out.println(javaObject);
+
+        // 使用JSONReader.Feature.SupportSmartMatch，可以将jsonStr的首字母大写的key映射到对象首字母小写的属性中
+        SysApp deserializedSysApp = JSON.parseObject(upcaseJson, SysApp.class, JSONReader.Feature.SupportSmartMatch);
+        // SysApp(id=1855798454814416898, name=fkp, age=25, addr=jinan, remark=null, createDate=Mon Nov 11 10:23:25 CST 2024)
+        System.out.println(deserializedSysApp);
     }
 }

@@ -6,6 +6,10 @@ import com.kms.util.crypto.CryptoParameter;
 import com.kms.util.crypto.CryptoUtils;
 //import com.sansec.jcajce.provider.asymmetric.sm2.JCESM2PublicKey;
 //import com.sansec.jce.provider.SwxaProvider;
+import com.kms.util.crypto.SynthesisPwdUtil;
+import com.kms.util.crypto.exception.CryptoAlgParameterException;
+import com.kms.util.crypto.exception.CryptoDataException;
+import com.kms.util.crypto.exception.CryptoKeyPraseException;
 import com.sansec.jce.provider.SwxaProvider;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
@@ -38,7 +42,7 @@ public class CryptoTest {
 
     @BeforeAll
     static void init(){
-        Security.addProvider(new BouncyCastleProvider());
+//        Security.addProvider(new BouncyCastleProvider());
     }
 
     @SneakyThrows
@@ -248,5 +252,26 @@ public class CryptoTest {
         byte[] bytes1 = CryptoUtils.asyEnc(bytes, "swxa1234.".getBytes(StandardCharsets.UTF_8), new CryptoParameter("SM2"));
         System.out.println(Hex.encodeHexString(CryptoUtils.convertGMSM2CipherToBC(CryptoUtils.convertSM2CipherTo0018(bytes1))));
 //        System.out.println(Base64.encodeBase64String(bytes));
+    }
+
+
+    @SneakyThrows
+    @Test
+    void testHmacSm3_2() throws CryptoKeyPraseException, CryptoDataException, NoSuchProviderException, CryptoAlgParameterException {
+
+        String keyByteString = "D9E5B4485C8388A46707F2D9BD2DE7648A4405605B3683F83F8F1E4CA66231420BEC522688F34B993783ECBDE2352BD5B8E915319B8DBED8CABB3C9A2A6F018794E035746C7C5EBC13284797416F441C9DA39B1E923100B8C63677AC0543CDEC99B7D55E01A63E80F3A37485043C4B4DA731DBD11CEAA1974969D99839C0BD0C00420F046424C6E6FCA3CBDC4764D1C0";
+        String keyHash = "23A8E77940B3B73F9FB193B477EE5DA52AA78C4EF55B2EDF160369CD29961AAC";
+
+        Security.addProvider(new SwxaProvider(null, null));
+        System.setProperty("SANSEC.SSL", "TRUE");
+//        byte[] keyBlob = Base64.decodeBase64("jGL0p/PXATUaTlmm+yrT8/hkeqMi1OVyT8Ab9gFb+Q4=");
+        byte[] keyBlob = Base64.decodeBase64("EvYiocZaIZ85LFJzC8J0sg==");
+        byte[] plainBlob = "SWXA1234@DAR_Mwqewdsfsddfsqewqeysql".getBytes();
+        byte[] res = CryptoUtils.mac(keyBlob, Hex.decodeHex(keyByteString), "HMACSM3");
+        String mac = Hex.encodeHexString(res);
+        System.out.println(mac);
+        System.out.println(keyHash.equalsIgnoreCase(mac));
+        System.out.println(res.length);
+
     }
 }

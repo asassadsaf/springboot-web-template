@@ -41,6 +41,10 @@ public class SynthesisCryptoUtils {
         return org.apache.commons.codec.binary.Base64.encodeBase64String(decResult);
     }
 
+    public static byte[] getKey() throws Exception {
+        return getKey(LMK1, LMK2, LMK3);
+    }
+
 
     private static byte[] file2byte(String path) throws IOException {
         File file = new File(path);

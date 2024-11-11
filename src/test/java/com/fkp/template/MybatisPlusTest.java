@@ -13,8 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.BadSqlGrammarException;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +85,25 @@ public class MybatisPlusTest {
             String invalidAttrName = getInvalidAttrName(e);
             throw new RuntimeException(invalidAttrName);
         }
+    }
+
+    /**
+     * 验证数据库唯一索引或主键冲突引发的异常类型
+     */
+    @Test
+    void testUniqueIndex(){
+        SysApp sysApp = SysApp.builder().id("003").name("fkpfkpfkp").age(24).addr("jinan").remark("ABC").build();
+        try {
+            int insert = sysAppMapper.insert(sysApp);
+        }catch (Exception e){
+            if(e instanceof DuplicateKeyException || e.getCause() instanceof SQLIntegrityConstraintViolationException || e instanceof DataIntegrityViolationException){
+                throw new RuntimeException("sysApp already exist.", e);
+            }else {
+                throw new RuntimeException("unknown error", e);
+            }
+        }
+        List<SysApp> sysApps = sysAppMapper.selectList(Wrappers.lambdaQuery(SysApp.class).eq(SysApp::getName, "fkpfkpfkp"));
+        System.out.println(sysApps);
 
     }
 

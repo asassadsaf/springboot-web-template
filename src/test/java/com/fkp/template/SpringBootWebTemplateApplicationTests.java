@@ -4,6 +4,8 @@ import com.fkp.template.core.util.SynthesisCryptoUtils;
 import com.fkp.template.modules.xkip.dto.response.SimpleRestResponse;
 import com.fkp.template.modules.xkip.service.SystemService;
 import com.fkp.template.core.util.SpringBeanUtils;
+import com.kms.util.crypto.CryptoUtils;
+import com.kms.util.crypto.SynthesisPwdUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,14 @@ class SpringBootWebTemplateApplicationTests {
 
     @Value("${business.shellPath.getSourceIps}")
     private String path;
+
+    @SneakyThrows
+    @Test
+    void testHmacSm3(){
+        byte[] synthesisKey = SynthesisCryptoUtils.getKey();
+        System.out.println(synthesisKey.length);
+        System.out.println(Base64.encodeBase64String(synthesisKey));
+    }
 
     @SneakyThrows
     @Test

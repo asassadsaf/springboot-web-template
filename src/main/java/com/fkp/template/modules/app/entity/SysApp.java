@@ -36,6 +36,9 @@ public class SysApp implements Serializable {
 
     private String addr;
 
+    @TableField(exist = false)
+    private String remark;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT)
     private Date createDate;
