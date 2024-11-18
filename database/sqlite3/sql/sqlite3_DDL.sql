@@ -45,6 +45,7 @@ CREATE UNIQUE INDEX "dimension_unique" ON "statistic_call_count"
      "tenant_account" ASC
 );
 
+DROP TABLE IF EXISTS "sys_app";
 create table "sys_app"
 (
     "id"          text(64)  not null,

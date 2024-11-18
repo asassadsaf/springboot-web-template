@@ -73,7 +73,7 @@ class SpringBootWebTemplateApplicationTests {
 
     @Test
     void contextLoads() throws Exception {
-//        Client client = new Client();
+//        GmSslClientTest2 client = new GmSslClientTest2();
 //        //String pathname, String method, java.util.Map<String, String> query, java.util.Map<String, String> headers,
 //        // String signatureAlgorithm, String payload, String ak, byte[] signingkey, String product, String region, String date
 //        String pathname = "/kms/xki/v1/keys/ExternalKeyId/meta";

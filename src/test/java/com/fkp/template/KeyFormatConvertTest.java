@@ -3,6 +3,8 @@ package com.fkp.template;
 import cn.hutool.core.util.ByteUtil;
 import com.kms.util.crypto.CryptoUtils;
 import com.sansec.adapter.AdapterUtils;
+import com.sansec.jcajce.provider.asymmetric.sm2.JCESM2PrivateKey;
+import com.sansec.jcajce.provider.asymmetric.sslsm2.JCESM2PrivateKey4Openssl;
 import com.sansec.jce.provider.SwxaProvider;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
@@ -14,11 +16,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Enumeration;
 
@@ -47,6 +51,7 @@ public class KeyFormatConvertTest {
         System.out.println(gmPriKey.length);
         byte[] gmPubKey = CryptoUtils.convertSM2PublicToGM(Base64.decodeBase64(asn1PubKey));
         System.out.println(Base64.encodeBase64String(gmPubKey));
+        System.out.println(Hex.encodeHexString(gmPubKey));
         System.out.println(ByteUtil.bytesToInt(Arrays.copyOfRange(gmPubKey, 0, 4)));
         System.out.println(gmPubKey.length);
         System.out.println(Arrays.toString(Arrays.copyOfRange(gmPubKey, 4, 4 + 64)));
@@ -204,4 +209,40 @@ public class KeyFormatConvertTest {
         }
 //        System.out.println(server);
     }
+
+
+    /**
+     * 对0009PKCS8格式SM2明文密钥材料转为OpenSSL格式
+     *
+     * @param keyBytes
+     * @return status msg keyInfo
+     */
+    @SneakyThrows
+    public static byte[] convert2OCTET(byte[] keyBytes) {
+
+        //使用DER编码的数组，重新构造SM2私钥对象
+        PKCS8EncodedKeySpec priSpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory fc = KeyFactory.getInstance("SM2", "SwxaJCE");
+        JCESM2PrivateKey newPrivate = (JCESM2PrivateKey) fc.generatePrivate(priSpec);
+
+        //转换为Openssl格式的SM2对象
+        JCESM2PrivateKey4Openssl openSslPriKey = new JCESM2PrivateKey4Openssl(newPrivate);
+        return openSslPriKey.getEncoded();
+    }
+
+    @SneakyThrows
+    @Test
+    void testOctet2Gm0009(){
+        String content = IOUtils.toString(URI.create("file:///D:/IDEAWorkSpace/springboot-web-template/config/certs/ccsp-x86/sm2_ccsp_enc_pri.pem"), StandardCharsets.UTF_8);
+        String pem = content.replaceAll("-----BEGIN PRIVATE KEY-----", "").replaceAll("-----END PRIVATE KEY-----", "").replaceAll("\r\n", "");
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.decodeBase64(pem));
+        KeyFactory keyFactory = KeyFactory.getInstance("SM2", "SwxaJCE");
+        PrivateKey privateKey = keyFactory.generatePrivate(spec);
+        System.out.println(privateKey.getClass());
+        JCESM2PrivateKey sm2PriKey = (JCESM2PrivateKey) privateKey;
+        // 通过构造私钥对象直接将OCTET格式变为0009格式
+        byte[] encoded = sm2PriKey.getEncoded();
+        System.out.println(Base64.encodeBase64String(encoded));
+    }
+
 }

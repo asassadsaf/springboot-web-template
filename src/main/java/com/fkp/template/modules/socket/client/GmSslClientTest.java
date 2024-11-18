@@ -1,24 +1,19 @@
 package com.fkp.template.modules.socket.client;
 
 import com.fkp.template.modules.socket.util.SocketUtils;
+import com.sansec.jce.provider.SwxaProvider;
+import com.sansec.tlcp.jsse.provider.SwxaJsseProvider;
 import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author fengkunpeng
@@ -26,14 +21,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @description
  * @date 2024/10/27 14:48
  */
-public class SslClientTest {
+public class GmSslClientTest {
     @SneakyThrows
     public static void main(String[] args) {
-        Security.addProvider(new BouncyCastleProvider());
-        String certsDir = System.getProperty("user.dir") + File.separator + "config" + File.separator + "certs" + File.separator;
-        String serverKeyStorePath = certsDir + "pt_rsa_sign_client.pfx";
-        String serverTrustKeyStorePath = certsDir + "rsa2048-sign.cer";
-        SSLSocketFactory sslSocketFactory = SocketUtils.genSslSocketFactory(null, null, null, false);
+//        System.setProperty("sansec.ssl.debug.all", "true");
+        Security.addProvider(new SwxaProvider());
+//        System.setProperty("SANSEC.SSL", "TRUE");
+        Security.addProvider(new SwxaJsseProvider());
+        String certsDir = System.getProperty("user.dir") + File.separator + "config" + File.separator + "certs" + File.separator + "SM2" + File.separator;
+        String serverKeyStorePath = certsDir + "sm2cert.jks";
+        String serverTrustKeyStorePath = certsDir + "sm2ca.cer";
+        SSLSocketFactory sslSocketFactory = SocketUtils.genSslSocketFactory(null, null, null, true);
         try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket()){
             socket.connect(new InetSocketAddress("127.0.0.1", 9000));
             socket.startHandshake();

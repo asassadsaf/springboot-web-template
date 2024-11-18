@@ -1,18 +1,19 @@
 package com.fkp.template.modules.socket.server;
 
 import com.fkp.template.modules.socket.util.SocketUtils;
+import com.sansec.jce.provider.SwxaProvider;
+import com.sansec.tlcp.jsse.provider.SwxaJsseProvider;
 import lombok.SneakyThrows;
-import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import javax.net.ssl.*;
-import java.io.*;
+import javax.net.ssl.SSLServerSocketFactory;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author fengkunpeng
@@ -20,15 +21,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @description
  * @date 2024/10/27 14:00
  */
-public class SslServerTest {
+public class GmSslServerTest {
 
     @SneakyThrows
     public static void main(String[] args) {
-//        Security.addProvider(new BouncyCastleProvider());
-        String certsDir = System.getProperty("user.dir") + File.separator + "config" + File.separator + "certs" + File.separator + "RSA" + File.separator;
-        String serverKeyStorePath = certsDir + "pt_rsa_sign_server.pfx";
-        String serverTrustKeyStorePath = certsDir + "pt_rsa_cer.cer";
-        SSLServerSocketFactory sslServerSocketFactory = SocketUtils.genSslServerSocketFactory(serverKeyStorePath, "swxa@2024", serverTrustKeyStorePath, false);
+//        System.setProperty("sansec.ssl.debug.all", "true");
+        Security.addProvider(new SwxaProvider());
+//        System.setProperty("SANSEC.SSL", "TRUE");
+        Security.addProvider(new SwxaJsseProvider());
+        String certsDir = System.getProperty("user.dir") + File.separator + "config" + File.separator + "certs" + File.separator + "ccsp-x86" + File.separator;
+        String serverKeyStorePath = certsDir + "sm2_ccsp.jks";
+        String serverTrustKeyStorePath = certsDir + "sm2cert.jks";
+        SSLServerSocketFactory sslServerSocketFactory = SocketUtils.genSslServerSocketFactory(serverKeyStorePath, "swxa1234.", null, true);
         try (ServerSocket serverSocket = sslServerSocketFactory.createServerSocket(9000)){
             while (true){
                 Socket socket = serverSocket.accept();
