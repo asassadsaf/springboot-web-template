@@ -1,5 +1,6 @@
 package com.fkp.template;
 
+import com.fkp.template.core.constant.AlgorithmEnum;
 import com.fkp.template.modules.xkip.dto.request.GenRandomRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Hex;
@@ -170,5 +171,10 @@ public class JavaTest {
         System.out.println(Base64Utils.encodeToString(bytes));
         String cipherText = "xv7xbtmK11db5TL0nQrpVvN12OBNERKkZBuxHA==";
         System.out.println(Hex.encodeHexString(Base64Utils.decodeFromString(cipherText)));
+    }
+
+    @Test
+    void testEnum(){
+        AlgorithmEnum.valueOf(null);
     }
 }

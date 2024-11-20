@@ -336,7 +336,7 @@ public class RedisUtils {
      * @return 删除成功的 数量
      */
     public Long delete(String key, String... hashKeys) {
-        return redisTemplate.opsForHash().delete(key, hashKeys);
+        return redisTemplate.opsForHash().delete(key, (Object[]) hashKeys);
     }
  
     /**
@@ -441,7 +441,7 @@ public class RedisUtils {
      */
     public void leftPushAll(String key, String... values) {
 //        redisTemplate.opsForList().leftPushAll(key,"w","x","y");
-        redisTemplate.opsForList().leftPushAll(key, values);
+        redisTemplate.opsForList().leftPushAll(key, (Object[]) values);
     }
  
     /**
@@ -464,7 +464,7 @@ public class RedisUtils {
      */
     public void rightPushAll(String key, String... values) {
         //redisTemplate.opsForList().leftPushAll(key,"w","x","y");
-        redisTemplate.opsForList().rightPushAll(key, values);
+        redisTemplate.opsForList().rightPushAll(key, (Object[]) values);
     }
  
     /**

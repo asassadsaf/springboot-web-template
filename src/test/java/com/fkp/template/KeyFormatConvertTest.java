@@ -1,6 +1,8 @@
 package com.fkp.template;
 
 import cn.hutool.core.util.ByteUtil;
+import com.fkp.template.core.util.ByteArrayUtils;
+import com.kms.util.crypto.CryptoParameter;
 import com.kms.util.crypto.CryptoUtils;
 import com.sansec.adapter.AdapterUtils;
 import com.sansec.jcajce.provider.asymmetric.sm2.JCESM2PrivateKey;
@@ -9,14 +11,19 @@ import com.sansec.jce.provider.SwxaProvider;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.EndianUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.bouncycastle.util.BigIntegers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URI;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
@@ -25,6 +32,7 @@ import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.stream.Collectors;
 
 /**
  * @author fengkunpeng
@@ -244,5 +252,78 @@ public class KeyFormatConvertTest {
         byte[] encoded = sm2PriKey.getEncoded();
         System.out.println(Base64.encodeBase64String(encoded));
     }
+
+    @Test
+    @SneakyThrows
+    void testCheckCipher(){
+        String protectKeyAsn1PubStr = "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEyZDlRJ56uhcPsR0pGioop5W+xv72QEncV45/jt6T6/5dJDbfoeDUT8XDdXNUrOAx8UXF/XIAKjG4YKYi9HO5kQ==";
+        String protectKeyAsn1PriStr = "MIGIAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBG4wbAIBAQIhAIj6PCRle3Cz+b1Nv5z4vHtkIXBuPTD8be3aEpGiR5QooUQDQgAEyZDlRJ56uhcPsR0pGioop5W+xv72QEncV45/jt6T6/5dJDbfoeDUT8XDdXNUrOAx8UXF/XIAKjG4YKYi9HO5kQ==";
+        byte[] protectKeyGmPubBytes = CryptoUtils.convertSM2PublicToGM(Base64.decodeBase64(protectKeyAsn1PubStr));
+        System.out.println("protectPubKey: \n" + Hex.encodeHexString(protectKeyGmPubBytes));
+        System.out.println("==========================================================================================");
+        String cipher = "00000000000000000000000000000000000000000000000000000000000000000745e730ea411f9848563a6f839d8a25d2d4a0c9e44626db7f36aa2f746982b10000000000000000000000000000000000000000000000000000000000000000aacf0caaf52a5ae09b5c509bec14666ba2b3a295fee39e3b01c44b737d99ee30ee35b363c6c8517f9405557788b579043d7fc991d2df3160b5f474fb6e91291b44000000055f809d33eebd5be1d34fde0f96a94cb35dcb65f7f115e7ff91fccdd876a53239ff8251027d06647cdc1b8d9ceb0e06670d48c4efae5c498e18a83d649671424c465d7d";
+        String publicKeyStr = "00010000000000000000000000000000000000000000000000000000000000000000000045f03c46d4bad37ffbea4b7311ae358ac251c2dfd0d2927e7fdd125d3b4fed700000000000000000000000000000000000000000000000000000000000000000a7d5a9bf83d5a9390cc428325b213e60cdb203082f79c24ecb711e1478930e81";
+        byte[] asn1CipherBytes = CryptoUtils.convertSM2CipherToASN1(Hex.decodeHex(cipher));
+        byte[] plainBytes = CryptoUtils.asyDec(Base64.decodeBase64(protectKeyAsn1PriStr), asn1CipherBytes, new CryptoParameter("SM2"));
+        System.out.println("decPriKey: \n" + Base64.encodeBase64String(plainBytes));
+        System.out.println("respPubKey: \n" + publicKeyStr);
+        System.out.println("==========================================================================================");
+        String asn1PriKeyStr = "MIGHAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBG0wawIBAQQgVsECYJOY+D63fOBC6jKcj3SSfA+IRx6Bue7GwjF4EzWhRANCAARF8DxG1LrTf/vqS3MRrjWKwlHC39DSkn5/3RJdO0/tcKfVqb+D1ak5DMQoMlshPmDNsgMIL3nCTstxHhR4kw6B";
+        String asn1PubKeyStr = "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAERfA8RtS603/76ktzEa41isJRwt/Q0pJ+f90SXTtP7XCn1am/g9WpOQzEKDJbIT5gzbIDCC95wk7LcR4UeJMOgQ==";
+        byte[] gmPriKeyBytes = CryptoUtils.convertSM2PrivateToGM(Base64.decodeBase64(asn1PriKeyStr));
+        byte[] gmPubKeyBytes = CryptoUtils.convertSM2PublicToGM(Base64.decodeBase64(asn1PubKeyStr));
+        System.out.println("realPubKey: \n" + Hex.encodeHexString(gmPubKeyBytes));
+        System.out.println("realPriKey: \n" + Base64.encodeBase64String(gmPriKeyBytes));
+        System.out.println("==========================================================================================");
+        System.out.println("pubKeyMatch: \n" + Base64.encodeBase64String(plainBytes).equals(Base64.encodeBase64String(gmPriKeyBytes)));
+        System.out.println("priKeyMatch: \n" + publicKeyStr.equals(Hex.encodeHexString(gmPubKeyBytes)));
+    }
+
+    @SneakyThrows
+    @Test
+    void testGmSm2Cipher(){
+        String cipherStr = "00000000000000000000000000000000000000000000000000000000000000000745e730ea411f9848563a6f839d8a25d2d4a0c9e44626db7f36aa2f746982b10000000000000000000000000000000000000000000000000000000000000000aacf0caaf52a5ae09b5c509bec14666ba2b3a295fee39e3b01c44b737d99ee30ee35b363c6c8517f9405557788b579043d7fc991d2df3160b5f474fb6e91291b44000000055f809d33eebd5be1d34fde0f96a94cb35dcb65f7f115e7ff91fccdd876a53239ff8251027d06647cdc1b8d9ceb0e06670d48c4efae5c498e18a83d649671424c465d7d";
+        byte[] cipherBytes = Hex.decodeHex(cipherStr);
+        byte[] x = Arrays.copyOfRange(cipherBytes, 0, 64);
+        byte[] y = Arrays.copyOfRange(cipherBytes, 64, 64 + 64);
+        byte[] m = Arrays.copyOfRange(cipherBytes, 64 + 64, 64 + 64 + 32);
+        byte[] l = Arrays.copyOfRange(cipherBytes, 64 + 64 + 32, 64 + 64 + 32 + 4);
+        int len = ByteUtil.bytesToInt(l, ByteOrder.LITTLE_ENDIAN);
+        byte[] c = Arrays.copyOfRange(cipherBytes, 64 + 64 + 32 + 4, 64 + 64 + 32 + 4 + len);
+        System.out.println("x: \n" + Hex.encodeHexString(x));
+        System.out.println("y: \n" + Hex.encodeHexString(y));
+        System.out.println("M: \n" + Hex.encodeHexString(m));
+        System.out.println("L: \n" + Hex.encodeHexString(l));
+        System.out.println("C: \n" + Hex.encodeHexString(c));
+        System.out.println("len: " + len);
+        String combineCipher = Hex.encodeHexString(ByteArrayUtils.combine(x, y, m, l, c));
+        System.out.println("cipher hex: \n" + combineCipher);
+        System.out.println("match: " + combineCipher.equals(cipherStr));
+
+    }
+
+    @SneakyThrows
+    @Test
+    void testAsn1Sm2PriData(){
+        String asn1PubStr = "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEyZDlRJ56uhcPsR0pGioop5W+xv72QEncV45/jt6T6/5dJDbfoeDUT8XDdXNUrOAx8UXF/XIAKjG4YKYi9HO5kQ==";
+        String asn1PriStr = "MIGIAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBG4wbAIBAQIhAIj6PCRle3Cz+b1Nv5z4vHtkIXBuPTD8be3aEpGiR5QooUQDQgAEyZDlRJ56uhcPsR0pGioop5W+xv72QEncV45/jt6T6/5dJDbfoeDUT8XDdXNUrOAx8UXF/XIAKjG4YKYi9HO5kQ==";
+        PKCS8EncodedKeySpec priKeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(asn1PriStr));
+        KeyFactory keyFactory = KeyFactory.getInstance("SM2", "SwxaJCE");
+        JCESM2PrivateKey privateKey = (JCESM2PrivateKey) keyFactory.generatePrivate(priKeySpec);
+        // 获取私钥数据
+        BigInteger sBigInteger = privateKey.getS();
+        System.out.println(sBigInteger);
+        byte[] sBytes = sBigInteger.toByteArray();
+        System.out.println(sBytes.length);
+        System.out.println(Hex.encodeHexString(sBytes));
+        // asn1 sm2私钥数据为为32字节长，国密结构在低位补零，长度位64字节
+        byte[] unsignedByteArray = BigIntegers.asUnsignedByteArray(32, sBigInteger);
+        System.out.println(Hex.encodeHexString(unsignedByteArray));
+        byte[] gmPriKeyBytes = CryptoUtils.convertSM2PrivateToGM(Base64.decodeBase64(asn1PriStr));
+        System.out.println(Hex.encodeHexString(Arrays.copyOfRange(gmPriKeyBytes, 0, 4)));
+        System.out.println(Hex.encodeHexString(Arrays.copyOfRange(gmPriKeyBytes, 4, 4 + 32)));
+        System.out.println(Hex.encodeHexString(Arrays.copyOfRange(gmPriKeyBytes, 4 + 32, gmPriKeyBytes.length)));
+    }
+
 
 }

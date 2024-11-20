@@ -10,7 +10,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.kms.v1.*;
 import com.google.cloud.kms.v1.stub.KeyManagementServiceStubSettings;
-import com.google.crypto.tink.subtle.Kwp;
+import com.google.crypto.tink.subtle.*;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.FieldMask;
 import com.google.protobuf.Timestamp;
@@ -557,6 +557,7 @@ public class GoogleTestController {
         System.out.println(org.apache.commons.codec.binary.Base64.decodeBase64(material).length);
     }
 
+    @SuppressWarnings("deprecation")
     public void importSymmetricKey(
             String projectId, String locationId, String keyRingId, String cryptoKeyId, String importJobId)
             throws GeneralSecurityException, IOException {
