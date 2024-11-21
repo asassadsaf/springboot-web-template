@@ -192,3 +192,13 @@ authentication:
     header: Authorization
     secret: abcdefghij0123456789ABCDEFGHIJKL
     expireTime: 30
+feign:
+  httpclient:
+    hc5:
+      enabled: true
+
+# 自定义httpclient5工具
+tools:
+  http-client5:
+    # 是否开启国密tlcp
+    tlcpProtocol: true

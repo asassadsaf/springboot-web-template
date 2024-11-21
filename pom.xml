@@ -261,6 +261,11 @@
             <artifactId>feign-hc5</artifactId>
             <version>11.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.fkp.tools</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
