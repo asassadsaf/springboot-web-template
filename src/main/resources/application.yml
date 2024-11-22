@@ -196,9 +196,21 @@ feign:
   httpclient:
     hc5:
       enabled: true
+  ssl:
+    enable-gm-protocol: false
+    disable-ssl-validation: false
+    provider-name: sun
+    key-store-type: pkcs12
+    key-store: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\pt_rsa_sign_client.pfx
+    key-store-pwd: swxa@2024
+    trust-key-store: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\root-ca.jks
+    trust-key-store-pwd: swxa@2024
+#    trust-certificate: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\pt_rsa_cer.cer
+
 
 # 自定义httpclient5工具
-tools:
-  http-client5:
-    # 是否开启国密tlcp
-    tlcpProtocol: true
+#tools:
+#  http-client5:
+#    # 是否开启国密tlcp
+#    tlcpProtocol: false
+#    enabled: false

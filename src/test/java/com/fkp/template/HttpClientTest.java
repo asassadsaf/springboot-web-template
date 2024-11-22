@@ -1,6 +1,6 @@
 package com.fkp.template;
 
-import com.fkp.tools.httpclient5.util.HttpClient5Utils;
+import com.fkp.tools.openfeign.util.HttpClient5Utils;
 import com.sansec.jce.provider.SwxaProvider;
 import com.sansec.tlcp.jsse.provider.SwxaJsseProvider;
 import org.junit.jupiter.api.BeforeAll;

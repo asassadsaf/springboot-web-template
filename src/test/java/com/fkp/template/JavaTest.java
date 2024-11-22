@@ -177,4 +177,9 @@ public class JavaTest {
     void testEnum(){
         AlgorithmEnum.valueOf(null);
     }
+
+    @Test
+    void testJdkVersion(){
+        System.out.println(System.getProperty("java.version"));
+    }
 }

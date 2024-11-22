@@ -44,7 +44,9 @@ public class FeignConfig {
     }
 
     //openfeign调用支持https
-    @Bean
+//    @Bean
+    // 使用openfeign默认实现，底层客户端工具为jdk默认，性能不佳，引入openfeign组件使用hc5
+    @Deprecated
     public Client feignClient(){
         try {
             SSLContext context = SSLContext.getInstance("SSL");
