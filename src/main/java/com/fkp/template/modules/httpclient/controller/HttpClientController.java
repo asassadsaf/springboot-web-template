@@ -6,6 +6,7 @@ import com.fkp.template.core.config.web.MyHttpServletRequestWrapper;
 import com.fkp.template.core.constant.CommonConstant;
 import com.fkp.template.core.constant.RestErrorEnum;
 import com.fkp.template.core.exception.RestBusinessException;
+import com.fkp.template.modules.app.entity.SysApp;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -91,6 +92,11 @@ public class HttpClientController {
             }
         }
         return param;
+    }
+
+    @PostMapping(value = "/testConvertJson")
+    public Object testConvertJson(@RequestBody SysApp sysApp){
+        return sysApp;
     }
 
 }

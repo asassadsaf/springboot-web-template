@@ -1,16 +1,25 @@
 package com.fkp.template;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
 import com.fkp.template.core.constant.AlgorithmEnum;
 import com.fkp.template.modules.xkip.dto.request.GenRandomRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Base64Utils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -105,8 +114,8 @@ public class JavaTest {
         byte[] result4 = digest2.digest(encoded1);
         System.out.println(Hex.encodeHexString(result4));
 
-//        openssl x509 -in cert.pem -outform der | openssl dgst -sha256 5165ef8cd5babac0957c7ac4ffa0b4d15de73f7a1d892b73e416e4e153633b3c
-//        openssl x509 -in cert.pem -noout -pubkey | openssl base64 -d | openssl dgst -sm3
+//        openssl x509 -in nginx-cert.pem -outform der | openssl dgst -sha256 5165ef8cd5babac0957c7ac4ffa0b4d15de73f7a1d892b73e416e4e153633b3c
+//        openssl x509 -in nginx-cert.pem -noout -pubkey | openssl base64 -d | openssl dgst -sm3
 
     }
 
@@ -181,5 +190,50 @@ public class JavaTest {
     @Test
     void testJdkVersion(){
         System.out.println(System.getProperty("java.version"));
+    }
+
+    @SneakyThrows
+    @Test
+    void testConvertLowerCase(){
+        File dir = new File("C:\\Users\\fengkunpeng\\Desktop\\证券4.1.2\\chunjun\\task\\OpenGaussToOpenGauss_Dynamics\\json\\plat");
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            convertChunjunJson2LowerCase(file, file, true, "postgresqlsource", "postgresqlsink");
+            convertChunjunJson2LowerCase(file, file, false, "postgresqlsource", "postgresqlsink");
+        }
+    }
+
+    @SneakyThrows
+    @Test
+    void convertChunjunJson2LowerCase(File sourceFile, File targetFile, boolean isReader, String sourceName, String sinkName){
+        String jsonStr = FileUtils.readFileToString(sourceFile, StandardCharsets.UTF_8);
+        JSONObject jsonObject = JSON.parseObject(jsonStr);
+        JSONObject readerObj = jsonObject.getJSONObject("job").getJSONArray("content").getJSONObject(0).getJSONObject(isReader ? "reader" : "writer");
+        readerObj.put("name", isReader ? sourceName : sinkName);
+        JSONObject parameterObj = readerObj.getJSONObject("parameter");
+        JSONArray columnArray = parameterObj.getJSONArray("column");
+        for (Object obj : columnArray) {
+            JSONObject columnObj = (JSONObject) obj;
+            columnObj.put("name", columnObj.getString("name").toLowerCase(Locale.ENGLISH));
+        }
+        if(isReader){
+            parameterObj.put("increColumn", "version");
+        }
+        JSONArray tableArray = parameterObj.getJSONArray("connection").getJSONObject(0).getJSONArray("table");
+        tableArray.add(tableArray.remove(0).toString().toLowerCase(Locale.ENGLISH));
+        if(!isReader){
+            JSONArray uniqueKeyArray = parameterObj.getJSONArray("uniqueKey");
+            if(CollectionUtils.isNotEmpty(uniqueKeyArray)){
+                uniqueKeyArray.add(uniqueKeyArray.remove(0).toString().toLowerCase(Locale.ENGLISH));
+            }
+            parameterObj.put("allReplace", true);
+        }
+        String jsonString = jsonObject.toJSONString(JSONWriter.Feature.PrettyFormat);
+        if (targetFile.exists()) {
+            targetFile.delete();
+        }
+        targetFile.createNewFile();
+        FileUtils.writeStringToFile(targetFile, jsonString, StandardCharsets.UTF_8);
+        System.out.println("write file" + (isReader ? "reader" : "writer") + "part success.targetFilePath: " + targetFile.getAbsolutePath());
     }
 }

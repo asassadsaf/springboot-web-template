@@ -1,6 +1,8 @@
 package com.fkp.template.core.handler;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fkp.template.core.constant.CommonConstant;
 import com.fkp.template.core.constant.RestErrorEnum;
 import com.fkp.template.core.dto.RestSimpleResponse;
@@ -12,7 +14,9 @@ import com.fkp.template.core.exception.BusinessException;
 import com.fkp.template.core.util.LogUtils;
 import com.fkp.template.modules.xkip.dto.response.SimpleRestResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,7 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author fengkunpeng
@@ -36,6 +42,28 @@ import java.util.Optional;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public RestSimpleResponse<?> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException exception){
+        Throwable cause = exception.getCause();
+        String invalidField = StringUtils.EMPTY;
+        if(cause instanceof InvalidFormatException){
+            InvalidFormatException invalidFormatException = (InvalidFormatException) cause;
+            List<JsonMappingException.Reference> path = invalidFormatException.getPath();
+            if(CollectionUtils.isNotEmpty(path)){
+                invalidField = path.stream().map(JsonMappingException.Reference::getFieldName).collect(Collectors.joining(","));
+            }
+        }
+        String errorCode = RestErrorEnum.PARAMS_INVALID.getCode();
+        String errorMsg = RestErrorEnum.PARAMS_INVALID.getMsg() + (StringUtils.isBlank(invalidField) ? invalidField : ": fields: [" + invalidField + "]");
+        RestSimpleResponse<?> errorResponse = RestSimpleResponse.fail(errorCode, errorMsg);
+        log.error("GlobalExceptionHandler: " +
+                        "\n-- ExceptionType:{} " +
+                        "\n-- ErrorCode:{} " +
+                        "\n-- ErrorMessage:{}",
+                exception.getClass().getName(), errorCode, errorMsg, exception);
+        return errorResponse;
+    }
 
     @ExceptionHandler(value = BusinessException.class)
     public ErrorResponse businessException(BusinessException exception, HttpServletResponse response, HttpServletRequest request, HandlerMethod handler){
