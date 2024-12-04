@@ -19,6 +19,7 @@ import org.springframework.jdbc.BadSqlGrammarException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.SQLSyntaxErrorException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -121,5 +122,18 @@ public class MybatisPlusTest {
             notFoundAttrName = StringUtils.substringBetween(message, "Unknown column", "in 'field list'") + notFoundAttrName;
         }
         return notFoundAttrName;
+    }
+
+    @Test
+    void testOpenGaussJdbc6AutoBalance(){
+//        sysAppMapper.delete(Wrappers.emptyWrapper());
+        List<SysApp> sysApps = sysAppMapper.selectList(Wrappers.emptyWrapper());
+        List<SysApp> sysApps2 = sysAppMapper.selectList(Wrappers.emptyWrapper());
+//        sysAppMapper.insert(new SysApp("001", "fkp", 25, "jinan", "abc", new Date()));
+//        sysAppMapper.insert(new SysApp("002", "fkp2", 25, "jinan", "abc", new Date()));
+//        sysAppMapper.insert(new SysApp("003", "fkp3", 25, "jinan", "abc", new Date()));
+        List<SysApp> sysApps3 = sysAppMapper.selectList(Wrappers.emptyWrapper());
+        List<SysApp> sysApps4 = sysAppMapper.selectList(Wrappers.emptyWrapper());
+
     }
 }

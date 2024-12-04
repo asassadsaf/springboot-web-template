@@ -6,11 +6,15 @@ import com.fkp.template.modules.xkip.entity.CertDigest;
 import com.fkp.template.modules.xkip.entity.CertDigestBean;
 import com.fkp.template.core.exception.BusinessException;
 import com.fkp.template.modules.xkip.service.SystemService;
+import com.sansec.jce.provider.SwxaProvider;
+import com.sansec.tlcp.jsse.provider.SwxaJsseProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.monitor.FileAlterationMonitor;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.opengauss.log.Log;
+import org.opengauss.log.Logger;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
@@ -125,6 +129,12 @@ public class MyAppListener implements SpringApplicationRunListener {
         if(Security.getProperty(BouncyCastleProvider.PROVIDER_NAME) == null){
             Security.addProvider(new BouncyCastleProvider());
         }
+//        if(Security.getProvider("SwxaJCE") == null){
+//            Security.addProvider(new SwxaProvider());
+//        }
+//        if(Security.getProvider("SwxaJSSE") == null){
+//            Security.addProvider(new SwxaJsseProvider());
+//        }
     }
 
     private void registerMyBean(ConfigurableApplicationContext context){

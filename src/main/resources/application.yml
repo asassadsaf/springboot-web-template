@@ -203,7 +203,7 @@ feign:
     # 是否关闭验证服务器证书
     disable-ssl-validation: false
     # provider选项，配置为swxa即可，需要有SwxaJce和SwxaJSSE依赖，在没有时可以使用sun，但是无法使用国密协议
-    provider-name: swxa
+    provider-name: sun
     # 配置用户证书的类型，支持PKCS12和JKS，若是国密协议，则证书必须包含用途项且为双证
     key-store-type: pkcs12
     # 配置用户证书，类型需要和key-store-type指定的一致

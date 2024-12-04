@@ -8,8 +8,11 @@ spring:
     driver-class-name: org.sqlite.JDBC
 #    url: jdbc:mysql://10.0.104.78:3306/service_test
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: SWXA1234@DAR_Mysql
+#    driver-class-name: org.opengauss.Driver
+#    url: jdbc:opengauss://10.0.120.80:5432,10.0.120.81:5432/sansec327?currentSchema=ccsp_kms&enableStatementLoadBalance=true&autoBalance=roundrobin&logger=org.opengauss.log.Slf4JLogger
+#    url: jdbc:opengauss://10.0.120.80:5432,10.0.120.81:5432/sansec327?currentSchema=ccsp_kms&targetServerType=master&logger=org.opengauss.log.Slf4JLogger
+#    username: sansec327
+#    password: swxa@2023
     druid:
       # 建立tcp连接超时时间 默认10秒
       connect-timeout: 10000
