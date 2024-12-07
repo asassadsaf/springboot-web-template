@@ -22,9 +22,9 @@ public class SpringWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(myInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(myInterceptor).addPathPatterns("/**")
 //                .excludePathPatterns(CommonConstant.BASE_URL + "/" + CommonConstant.VERSION_V1 + "/system/**")
-//                .excludePathPatterns("/error");
+                .excludePathPatterns("/error");
 //        registry.addInterceptor(innerAccessInterceptor).addPathPatterns(CommonConstant.BASE_URL + "/" + CommonConstant.VERSION_V1 + "/system/**");
     }
 }

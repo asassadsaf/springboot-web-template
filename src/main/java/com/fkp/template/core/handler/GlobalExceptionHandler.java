@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fkp.template.core.constant.CommonConstant;
+import com.fkp.template.core.constant.ErrorCodeEnum;
 import com.fkp.template.core.constant.RestErrorEnum;
 import com.fkp.template.core.dto.RestSimpleResponse;
 import com.fkp.template.core.exception.RestBusinessException;
@@ -63,6 +64,18 @@ public class GlobalExceptionHandler {
                         "\n-- ErrorMessage:{}",
                 exception.getClass().getName(), errorCode, errorMsg, exception);
         return errorResponse;
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public RestSimpleResponse<?> unKnowException(Exception exception){
+        String errorCode = String.valueOf(ErrorCodeEnum.InternalServerError.getStatusCode());
+        String errorMsg = exception.getMessage();
+        log.error("GlobalExceptionHandler: " +
+                        "\n-- ExceptionType:{} " +
+                        "\n-- ErrorCode:{} " +
+                        "\n-- ErrorMessage:{}",
+                exception.getClass().getName(), errorCode, errorMsg, exception);
+        return RestSimpleResponse.fail(errorCode, ErrorCodeEnum.InternalServerError.getErrorCode());
     }
 
     @ExceptionHandler(value = BusinessException.class)
