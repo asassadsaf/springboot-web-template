@@ -63,6 +63,7 @@ public class MyAppListener implements SpringApplicationRunListener {
         loadExternalConfig(environment);
         // 初始化合成分量加解密工具类
         initSynthesis(environment);
+        sslLogConfig(environment);
     }
 
     @Override
@@ -80,6 +81,11 @@ public class MyAppListener implements SpringApplicationRunListener {
         }catch (Exception e){
             log.error("init synthesis key error.", e);
         }
+    }
+
+    private void sslLogConfig(ConfigurableEnvironment environment){
+        String javaxNetDebug = environment.getProperty("logging.javaxNetDebug", "false");
+        System.setProperty("javax.net.debug", javaxNetDebug);
     }
 
     private void loadExternalConfig(ConfigurableEnvironment environment){

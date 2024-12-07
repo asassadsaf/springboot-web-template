@@ -169,6 +169,7 @@ remote:
 # 配置log4j2配置文件路径
 logging:
   config: "${application.path}/config/log4j2.xml"
+  javaxNetDebug: false
 
 mybatis-plus:
   # 指定mapper xml的位置
