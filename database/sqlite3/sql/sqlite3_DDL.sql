@@ -52,8 +52,9 @@ create table "sys_app"
     "name"        text(32)  not null,
     "age"         integer   null,
     "addr"        text(128) null,
+    "remark"      text(32)  null,
     "create_date" datetime  null,
     PRIMARY KEY ("id")
 );
 
-create unique index "user_name_unique_index" on "sys_app" ("name" asc);
+-- create unique index "user_name_unique_index" on "sys_app" ("name" asc);

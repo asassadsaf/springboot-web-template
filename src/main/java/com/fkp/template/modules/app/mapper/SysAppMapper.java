@@ -2,6 +2,10 @@ package com.fkp.template.modules.app.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fkp.template.modules.app.entity.SysApp;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.fkp.template.modules.app.entity.SysApp;
  */
 public interface SysAppMapper extends BaseMapper<SysApp> {
 
+    List<Map<String, Object>> selectTest(@Param("current") String current);
 }

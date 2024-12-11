@@ -19,9 +19,9 @@ import org.springframework.jdbc.BadSqlGrammarException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.SQLSyntaxErrorException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author fengkunpeng
@@ -135,5 +135,66 @@ public class MybatisPlusTest {
         List<SysApp> sysApps3 = sysAppMapper.selectList(Wrappers.emptyWrapper());
         List<SysApp> sysApps4 = sysAppMapper.selectList(Wrappers.emptyWrapper());
 
+    }
+
+    @Test
+    void testCaseWhen(){
+        sysAppMapper.insert(SysApp.builder().id("001").name("1").remark("1756567738275").addr("a").build());
+        sysAppMapper.insert(SysApp.builder().id("002").name("1").remark("1756567738275").addr("a").build());
+        sysAppMapper.insert(SysApp.builder().id("003").name("1").remark("1556567738275").addr("a").build());
+        sysAppMapper.insert(SysApp.builder().id("004").name("2").remark("1756567738275").addr("a").build());
+        sysAppMapper.insert(SysApp.builder().id("005").name("2").remark("1756567738275").addr("a").build());
+
+        String nameField = "name";
+        String remarkField = "remark";
+        String current = String.valueOf(System.currentTimeMillis());
+        QueryWrapper<SysApp> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("  CASE" +
+                "    WHEN (" + nameField + " = '1' AND " + remarkField + "  >= '" + current + "') THEN '2'" +
+                "    WHEN (" + nameField + " = '1' AND " + remarkField + "  < '" + current + "') THEN '3'" +
+                "    WHEN (" + nameField + " = '2') THEN '4'" +
+                "  END AS state, COUNT(*) AS count")
+                .eq("addr", "a")
+                .last("GROUP BY state");
+        List<Map<String, Object>> maps = sysAppMapper.selectMaps(queryWrapper);
+        List<Map<String, Object>> maps1 = sysAppMapper.selectMaps(Wrappers.emptyWrapper());
+        System.out.println(current);
+        System.out.println(maps);
+        System.out.println(maps1);
+
+    }
+
+    @Test
+    void testCaseWhen2(){
+//        sysAppMapper.insert(SysApp.builder().id("001").name("1").remark("1756567738275").addr("a").age(20).build());
+//        sysAppMapper.insert(SysApp.builder().id("002").name("1").remark("1756567738275").addr("a").age(20).build());
+//        sysAppMapper.insert(SysApp.builder().id("003").name("1").remark("1556567738275").addr("a").age(21).build());
+//        sysAppMapper.insert(SysApp.builder().id("004").name("2").remark("1756567738275").addr("a").age(21).build());
+//        sysAppMapper.insert(SysApp.builder().id("005").name("2").remark("1756567738275").addr("a").age(22).build());
+
+        List<Map<String, Object>> maps = sysAppMapper.selectTest(String.valueOf(System.currentTimeMillis()));
+        System.out.println(maps);
+    }
+
+    @Test
+    void testInitMap(){
+        Map<String, Long> map = new HashMap<>();
+        map.put("1", 0L);
+        map.put("2", 0L);
+        System.out.println(map.getClass());
+        Map<String, Long> map2 = Stream.of("1", "2").collect(Collectors.toMap(key -> key, value -> 0L));
+        System.out.println(map2.getClass());
+        map2.put("3", 0L);
+        HashMap<String, Long> map3 = new HashMap<String, Long>() {
+            {
+                put("1", 0L);
+                put("2", 0L);
+            }
+        };
+        map3.put("3", 0L);
+        System.out.println(map3.getClass());
+        System.out.println(map);
+        System.out.println(map2);
+        System.out.println(map3);
     }
 }

@@ -8,6 +8,7 @@
         <result column="name" property="name" />
         <result column="age" property="age" />
         <result column="addr" property="addr" />
+        <result column="remark" property="remark" />
         <result column="create_date" property="createDate" />
     </resultMap>
 
@@ -15,5 +16,19 @@
     <sql id="Base_Column_List">
         id, name, age, addr, create_date
     </sql>
+
+    <select id="selectTest" resultType="java.util.Map">
+        select
+            case
+                when name = '1' and remark &gt;= #{current} then '2'
+                when name = '1' and remark &lt; #{current} then '3'
+                when name = '2' then '4'
+            end as state,
+            count(1) as count,
+            age as age
+        from sys_app
+        where addr = 'a'
+        group by state, age;
+    </select>
 
 </mapper>
