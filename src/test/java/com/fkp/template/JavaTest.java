@@ -236,4 +236,19 @@ public class JavaTest {
         FileUtils.writeStringToFile(targetFile, jsonString, StandardCharsets.UTF_8);
         System.out.println("write file" + (isReader ? "reader" : "writer") + "part success.targetFilePath: " + targetFile.getAbsolutePath());
     }
+
+    @Test
+    void testProperty(){
+        // Properties继承HashTable，其不能有null的key和value，ConcurrentHashMap不能有null的key和value
+        Properties properties = new Properties();
+        // NullPointerException
+//        properties.setProperty("abc", null);
+        // NullPointerException
+//        properties.setProperty(null, "fkp");
+        System.out.println(properties);
+//         HashMap可以有null值，key也可以为null，但是只能有一个为null的key
+        Map<String, Object> map = new HashMap<>();
+        map.put("abc", null);
+        System.out.println(map);
+    }
 }

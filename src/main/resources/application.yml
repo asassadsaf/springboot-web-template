@@ -39,6 +39,8 @@ spring:
       keep-alive: false
       # 连接保活发送心跳间隔时间 默认timeBetweenEvictionRunsMillis * 2
       keep-alive-between-time-millis: 120000
+      # 指定数据库类型，若不指定则根据jdbc url判断，vastbase数据库没有匹配的所以会报错
+#      db-type: sqlite
   # 程序启动初始化sql配置
   sql:
     init:
