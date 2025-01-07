@@ -45,7 +45,7 @@ spring:
   sql:
     init:
       # ALWAYS、EMBEDDED(嵌入数据库才执行)、NEVER
-      mode: always
+      mode: NEVER
       # ddl脚本路径
       schema-locations: "file:${application.path}/database/sqlite3/sql/sqlite3_DDL.sql"
       # dml脚本路径
@@ -204,22 +204,26 @@ feign:
     # 是否开启国密协议
     enable-gm-protocol: false
     # 是否关闭验证服务器证书
-    disable-ssl-validation: false
+    disable-ssl-validation: true
     # provider选项，配置为swxa即可，需要有SwxaJce和SwxaJSSE依赖，在没有时可以使用sun，但是无法使用国密协议
     provider-name: sun
     # 配置用户证书的类型，支持PKCS12和JKS，若是国密协议，则证书必须包含用途项且为双证
-    key-store-type: pkcs12
+#    key-store-type: pkcs12
     # 配置用户证书，类型需要和key-store-type指定的一致
-    key-store: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\pt_rsa_sign_client.pfx
+#    key-store: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\pt_rsa_sign_client.pfx
     # 对应的证书密码
-    key-store-pwd: swxa@2024
+#    key-store-pwd: swxa@2024
     # 配置服务器根证书，支持JKS和PEM证书格式，trust-key-store指定JKS证书trust-certificate指定PEM证书，二者选其一，同时配置优先trust-certificate
-    trust-key-store: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\root-ca.jks
+#    trust-key-store: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\root-ca.jks
     # 配置服务器根证书JKS的密码
-    trust-key-store-pwd: swxa@2024
+#    trust-key-store-pwd: swxa@2024
     # 配置服务器根证书PEM格式，trust-key-store指定JKS证书trust-certificate指定PEM证书，二者选其一，同时配置优先trust-certificate
+    # 通过配置开启feign日志，和com.fkp.template.core.config.openfeign.FeignConfig#openfeignLogger效果相同
+#  client:
+#    config:
+#      default:
+#        logger-level: full
 #    trust-certificate: D:\IDEAWorkSpace\springboot-web-template\config\certs\RSA\pt_rsa_cer.cer
-
 
 # 自定义httpclient5工具
 #tools:

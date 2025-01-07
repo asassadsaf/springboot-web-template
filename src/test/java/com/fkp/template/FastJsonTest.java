@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
 import com.fkp.template.core.dto.RestSimpleResponse;
 import com.fkp.template.modules.app.entity.SysApp;
+import com.fkp.template.modules.authentication.entity.SysUser;
 import com.fkp.template.modules.dbintegrity.entity.DatabaseIntegrity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -215,5 +217,35 @@ public class FastJsonTest {
         SysApp deserializedSysApp = JSON.parseObject(upcaseJson, SysApp.class, JSONReader.Feature.SupportSmartMatch);
         // SysApp(id=1855798454814416898, name=fkp, age=25, addr=jinan, remark=null, createDate=Mon Nov 11 10:23:25 CST 2024)
         System.out.println(deserializedSysApp);
+    }
+
+    /**
+     * 对于制定了反序列化类型的情况，jsonStr无法转换时将报错，暂没有忽略报错的方法
+     */
+    @Test
+    void tsetDeSerializeNotMatch(){
+        JSONObject jsonObject = new JSONObject();
+        SysUser sysUser = SysUser.builder().id("001").username("fkp").build();
+        jsonObject.put("sysUser", sysUser);
+        jsonObject.put("age", 23);
+        String jsonString = jsonObject.toJSONString();
+        System.out.println(jsonString);
+        Object o = JSON.parseObject(jsonString.getBytes(StandardCharsets.UTF_8), new TypeReference<Map<String, SysApp>>() {
+        }.getType());
+        System.out.println(o);
+    }
+
+    @Test
+    void testJudgeJsonObject(){
+        List<String> list = Arrays.asList("abc","def");
+        String jsonArrayStr = JSON.toJSONString(list);
+        Map<String, String> map = Collections.singletonMap("name", "fkp");
+        String jsonObjectStr = JSON.toJSONString(map);
+        System.out.println(jsonArrayStr);
+        System.out.println(jsonObjectStr);
+        System.out.println(JSON.isValidObject(jsonObjectStr));
+        System.out.println(JSON.isValidObject(jsonArrayStr));
+        System.out.println(JSON.isValidArray(jsonObjectStr));
+        System.out.println(JSON.isValidArray(jsonArrayStr));
     }
 }

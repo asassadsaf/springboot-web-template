@@ -1,7 +1,10 @@
 package com.fkp.template;
 
 import cn.hutool.core.util.ByteUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.fkp.template.core.util.ByteArrayUtils;
+import com.fkp.template.modules.app.entity.SysApp;
 import com.kms.util.crypto.CryptoParameter;
 import com.kms.util.crypto.CryptoUtils;
 import com.sansec.adapter.AdapterUtils;
@@ -28,8 +31,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.stream.Collectors;
@@ -323,6 +328,38 @@ public class KeyFormatConvertTest {
         System.out.println(Hex.encodeHexString(Arrays.copyOfRange(gmPriKeyBytes, 0, 4)));
         System.out.println(Hex.encodeHexString(Arrays.copyOfRange(gmPriKeyBytes, 4, 4 + 32)));
         System.out.println(Hex.encodeHexString(Arrays.copyOfRange(gmPriKeyBytes, 4 + 32, gmPriKeyBytes.length)));
+    }
+
+    @Test
+    @SneakyThrows
+    void testParseCert(){
+        Security.addProvider(new SwxaProvider());
+        long start = System.currentTimeMillis();
+//        for (int i = 0; i < 1000; i++) {
+            String certStr = "308201AC30820151A00302010202082767970D2D9314E6300C06082A811CCF55018375050030413110300E06035504030C07534D32524F4F54310F300D060355040A0C0653414E534543310F300D060355040B0C0653414E534543310B300906035504061302434E3020170D3230303531313132323630315A180F32313230303431373132323630315A30413110300E06035504030C07534D32524F4F54310F300D060355040A0C0653414E534543310F300D060355040B0C0653414E534543310B300906035504061302434E3059301306072A8648CE3D020106082A811CCF5501822D03420004812526F14AD6D4F0ABB0546908F45958D95C9B9459FF051692ADF9374D8286328EA9A838E56D9A5BD4BA1214E121F68CF9629D544A93EF4949168D96CE59E9AAA32F302D301D0603551D0E041604142BC03C2E6A3D26AA199EC9143493201B1BAED0E9300C0603551D13040530030101FF300C06082A811CCF5501837505000347003044022054740C7711B8CA7E18B54A625A7E99B7D19C5689DEB2C3698D829A074CF066D4022073E0066F4276EB748EC72201B1A9A3EDBB5417E941925BFE8149C0FB1BD5CA00";
+            CertificateFactory instance = CertificateFactory.getInstance("X.509", "SwxaJCE");
+            Certificate certificate = instance.generateCertificate(new ByteArrayInputStream(Hex.decodeHex(certStr)));
+            System.out.println(certificate.getClass().getName());
+            System.out.println(certificate);
+        X509Certificate x509Certificate = (X509Certificate) certificate;
+        System.out.println(x509Certificate.getSerialNumber().toString(16));
+        System.out.println(x509Certificate.getIssuerX500Principal().toString());
+        System.out.println(x509Certificate.getSubjectX500Principal().toString());
+        System.out.println(x509Certificate.getNotBefore());
+        System.out.println(x509Certificate.getNotAfter());
+//        }
+        System.out.println(System.currentTimeMillis() - start);
+    }
+
+    @Test
+    void testJSONValid(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", "fkp");
+        String testStr = "adsdas";
+        System.out.println(JSON.isValidObject(jsonObject.toJSONString()));
+        System.out.println(JSON.isValidObject(testStr));
+        SysApp name = jsonObject.getObject("fkp", SysApp.class);
+        System.out.println(name);
     }
 
 

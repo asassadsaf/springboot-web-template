@@ -3,11 +3,14 @@ package com.fkp.template;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Sequence;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fkp.template.core.util.MybatisPlusUtils;
 import com.fkp.template.core.util.StrIdGenerator;
 import com.fkp.template.modules.app.entity.SysApp;
 import com.fkp.template.modules.app.mapper.SysAppMapper;
 import com.fkp.template.modules.dbintegrity.entity.DatabaseIntegrity;
 import com.fkp.template.modules.dbintegrity.mapper.DatabaseIntegrityMapper;
+import com.fkp.template.modules.keyobject.entity.KeyObject;
+import com.fkp.template.modules.keyobject.mapper.KeyObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -38,6 +41,9 @@ public class MybatisPlusTest {
 
     @Autowired
     private SysAppMapper sysAppMapper;
+
+    @Autowired
+    private KeyObjectMapper keyObjectMapper;
 
     @Test
     void testSysApp(){
@@ -197,4 +203,18 @@ public class MybatisPlusTest {
         System.out.println(map2);
         System.out.println(map3);
     }
+
+    @Test
+    void testKeyObject(){
+        String algField = MybatisPlusUtils.getColumnNameByRef(KeyObject::getSCryptographicAlgorithm);
+        String stateField = MybatisPlusUtils.getColumnNameByRef(KeyObject::getSState);
+        String archiveFlagField = MybatisPlusUtils.getColumnNameByRef(KeyObject::getArchiveFlag);
+        QueryWrapper<KeyObject> keyObjectQueryWrapper = new QueryWrapper<>();
+        keyObjectQueryWrapper.select("count(1) as count", algField, stateField, archiveFlagField)
+                .eq(MybatisPlusUtils.getColumnNameByRef(KeyObject::getTenantAccount), Optional.ofNullable("SYSTEMMANAGE").orElse(StringUtils.EMPTY))
+                .groupBy(algField, stateField, archiveFlagField);
+        System.out.println(keyObjectMapper.selectMaps(keyObjectQueryWrapper));
+    }
+
+
 }

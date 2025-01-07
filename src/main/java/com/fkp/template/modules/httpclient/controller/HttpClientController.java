@@ -11,13 +11,16 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +32,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = CommonConstant.BASE_URL + "/" + CommonConstant.VERSION_V1 + "/client", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@Validated
 public class HttpClientController {
 
     //GET-header
@@ -97,6 +101,11 @@ public class HttpClientController {
     @PostMapping(value = "/testConvertJson")
     public Object testConvertJson(@RequestBody SysApp sysApp){
         return sysApp;
+    }
+
+    @PostMapping(value = "testValidSize")
+    public String testValidSize(@RequestBody @Size(min = 0, max = 2, message = "min: 0, max: 2") List<SysApp> req){
+        return JSON.toJSONString(req);
     }
 
 }

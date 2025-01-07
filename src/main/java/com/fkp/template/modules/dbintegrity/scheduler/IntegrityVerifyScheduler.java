@@ -22,7 +22,7 @@ public class IntegrityVerifyScheduler {
     @Autowired
     private DatabaseIntegrityService databaseIntegrityService;
 
-    @Scheduled(fixedRateString = "${business.databaseIntegrity.verifySchedulingRate:10}", timeUnit = TimeUnit.MINUTES)
+//    @Scheduled(fixedRateString = "${business.databaseIntegrity.verifySchedulingRate:10}", timeUnit = TimeUnit.MINUTES)
     private void queryAndRegisterScheduler(){
         for (DatabaseIntegrity databaseIntegrity : databaseIntegrityService.listIdAndFrequency()) {
             databaseIntegrityService.startVerifyIntegrityScheduler(databaseIntegrity.getId(), databaseIntegrity.getFrequency());

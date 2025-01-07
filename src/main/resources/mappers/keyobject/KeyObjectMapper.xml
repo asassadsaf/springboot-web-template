@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fkp.template.modules.keyobject.mapper.KeyObjectMapper">
+    <resultMap id="BaseResultMap" type="com.fkp.template.modules.keyobject.entity.KeyObject">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="CURVE" jdbcType="VARCHAR" property="curve"/>
+        <result column="GROUPFLAG" jdbcType="INTEGER" property="groupFlag"/>
+        <result column="KEYBYTESTRING" property="keyByteString"/>
+        <result column="KEYFORMATTYPE" jdbcType="VARCHAR" property="keyFormatType"/>
+        <result column="KEYHASH" property="keyHash"/>
+        <result column="KEYLENGTH" jdbcType="INTEGER" property="keyLength"/>
+        <!--<result column="KEYVALUELOCATE" jdbcType="VARCHAR" property="keyValueLocate"/>-->
+        <!--<result column="KEYVALUEPRESENT" jdbcType="VARCHAR" property="keyValuePresent"/>-->
+        <result column="LDAPUSER" jdbcType="VARCHAR" property="ldapUser"/>
+        <result column="QLENGTH" jdbcType="INTEGER" property="qLength"/>
+        <result column="S_ACTIVATIONDATE" jdbcType="VARCHAR" property="sActivationDate"/>
+        <result column="S_ARCHIVEDATE" jdbcType="VARCHAR" property="sArchiveDate"/>
+        <result column="S_COMPROMISEDATE" jdbcType="VARCHAR" property="sCompromiseDate"/>
+        <result column="S_COMPROMISEOCCURRENCEDATE" jdbcType="VARCHAR" property="sCompromiseOccurrenceDate"/>
+        <result column="S_CRYPTOGRAPHICALGORITHM" jdbcType="VARCHAR" property="sCryptographicAlgorithm"/>
+        <result column="S_CRYPTOGRAPHICLENGTH" jdbcType="INTEGER" property="sCryptographicLength"/>
+        <result column="S_CRYPTOGRAPHICUSAGEMASK" jdbcType="VARCHAR" property="sCryptographicUsageMask"/>
+        <result column="S_DEACTIVATIONDATE" jdbcType="VARCHAR" property="sDeactivationDate"/>
+        <result column="S_DESTROYDATE" jdbcType="VARCHAR" property="sDestroyDate"/>
+        <result column="S_EXTEND1" jdbcType="VARCHAR" property="sExtend1"/>
+        <result column="S_EXTEND2" jdbcType="VARCHAR" property="sExtend2"/>
+        <result column="S_EXTEND3" jdbcType="VARCHAR" property="sExtend3"/>
+        <result column="S_EXTEND4" jdbcType="VARCHAR" property="sExtend4"/>
+        <result column="S_EXTEND5" jdbcType="VARCHAR" property="sExtend5"/>
+        <result column="S_EXTRACTABLE" jdbcType="VARCHAR" property="sExtractable"/>
+        <result column="S_INITIALDATE" jdbcType="VARCHAR" property="sInitialDate"/>
+        <result column="S_KEYVERSION" jdbcType="INTEGER" property="sKeyVersion"/>
+        <result column="S_LASTCHANGEDATE" jdbcType="VARCHAR" property="sLastChangeDate"/>
+        <result column="S_NAMETYPE" jdbcType="VARCHAR" property="sNameType"/>
+        <result column="S_NAMEVALUE" jdbcType="VARCHAR" property="sNameValue"/>
+        <result column="S_OBJECTTYPE" jdbcType="VARCHAR" property="sObjectType"/>
+        <result column="S_POLICYCOUNT" jdbcType="INTEGER" property="sPolicyCount"/>
+        <result column="S_PROCESSSTARTDATE" jdbcType="VARCHAR" property="sProcessStartDate"/>
+        <result column="S_PROTECTSTOPDATE" jdbcType="VARCHAR" property="sProtectStopDate"/>
+        <result column="S_STATE" jdbcType="INTEGER" property="sState"/>
+        <result column="S_UNIQUEIDENTIFIER" jdbcType="VARCHAR" property="sUniqueIdentifier"/>
+        <result column="SHORTUNIQUEIDENTIFIER" jdbcType="VARCHAR" property="shortUniqueIdentifier"/>
+        <result column="USERNAME" jdbcType="VARCHAR" property="username"/>
+        <result column="TENANTAccount" jdbcType="VARCHAR" property="tenantAccount"/>
+        <result column="S_FRESH" jdbcType="INTEGER" property="sFresh"/>
+
+        <result column="CERTISSUER" jdbcType="VARCHAR" property="certIssuer"/>
+        <result column="CERTSERIALNUMBER" jdbcType="VARCHAR" property="certSerialNumber"/>
+        <result column="CERTSUBJECT" jdbcType="VARCHAR" property="certSubject"/>
+        <result column="ARCHIVEFlag" jdbcType="VARCHAR" property="archiveFlag"/>
+        <result column="KeyStore" jdbcType="VARCHAR" property="keyStore"/>
+        <result column="KeyUse" jdbcType="VARCHAR" property="keyUse"/>
+        <result column="hid" jdbcType="INTEGER" property="hid"/>
+        <result column="ENC_TYPE" jdbcType="VARCHAR" property="encType"/>
+        <result column="LMKNUMBER" jdbcType="VARCHAR" property="lmkNumber" />
+        <result column="LMK_PLAIN" jdbcType="VARCHAR" property="lmkPlain"/>
+    </resultMap>
+</mapper>

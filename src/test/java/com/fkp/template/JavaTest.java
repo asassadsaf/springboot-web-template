@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
 import com.fkp.template.core.constant.AlgorithmEnum;
+import com.fkp.template.modules.app.entity.SysApp;
 import com.fkp.template.modules.xkip.dto.request.GenRandomRequest;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.binary.Hex;
@@ -26,6 +27,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author fengkunpeng
@@ -250,5 +252,38 @@ public class JavaTest {
         Map<String, Object> map = new HashMap<>();
         map.put("abc", null);
         System.out.println(map);
+    }
+
+    @Test
+    void testConvertType(){
+        Long longValue = 3L;
+        Integer integerValue = 3;
+        String strValue = "3";
+
+        System.out.println(longValue.toString().getClass().getName());
+        System.out.println(integerValue.toString().getClass().getName());
+        System.out.println(strValue.getClass().getName());
+    }
+
+    @Test
+    void testOptional(){
+        List<SysApp> list = null;
+        Random random = new Random();
+        int i = random.nextInt(100);
+        if(i< 5){
+            list = new ArrayList<>();
+            list.add(SysApp.builder().name("fkp").build());
+        }
+        List<String> collect = Optional.ofNullable(list).orElse(Collections.emptyList()).stream().map(SysApp::getName).collect(Collectors.toList());
+        System.out.println(collect);
+    }
+
+    @Test
+    void testRemoveAll(){
+        List<String> list = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
+        list.add("fkp");
+        list.removeAll(list2);
+        System.out.println(list);
     }
 }
