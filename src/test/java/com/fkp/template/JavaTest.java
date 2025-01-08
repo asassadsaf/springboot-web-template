@@ -7,7 +7,16 @@ import com.alibaba.fastjson2.JSONWriter;
 import com.fkp.template.core.constant.AlgorithmEnum;
 import com.fkp.template.modules.app.entity.SysApp;
 import com.fkp.template.modules.xkip.dto.request.GenRandomRequest;
+import com.kms.util.crypto.CryptoParameter;
+import com.kms.util.crypto.CryptoUtils;
+import com.kms.util.crypto.HexUtils;
+import com.kms.util.crypto.exception.CryptoAlgParameterException;
+import com.kms.util.crypto.exception.CryptoDataException;
+import com.kms.util.crypto.exception.CryptoKeyPraseException;
+import com.sansec.jce.provider.SwxaProvider;
 import lombok.SneakyThrows;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -21,6 +30,8 @@ import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -285,5 +296,46 @@ public class JavaTest {
         list.add("fkp");
         list.removeAll(list2);
         System.out.println(list);
+    }
+
+    @SneakyThrows
+    @Test
+    void testfkp(){
+        String key = "d2qV+1Jg2MfW6UBWrTT3iMdMfiidYJ096byzzz29iFM=";
+        System.out.println(Base64.decodeBase64(key).length);
+        String keyHex = "2A7ECBF0364AFBEAC252F644248A6953D7018B7FE0E8375B6262FE219A29FE0960C9CCE43D1EFE5E294C4FB6181045FF";
+        String s = Base64.encodeBase64String(Hex.decodeHex(keyHex));
+        System.out.println(s);
+        System.out.println(Base64.decodeBase64("Kn7L8DZK++rCUvZEJIppU9cBi3/g6DdbYmL+IZop/glgyczkPR7+XilMT7YYEEX/").length);
+    }
+
+    @Test
+    void testDec() throws CryptoKeyPraseException, CryptoDataException, NoSuchProviderException, CryptoAlgParameterException {
+        Security.addProvider(new SwxaProvider());
+        byte[] keyIdBytes = "Symm57461be5-010f-4581-82bd-ee4fad2c4e19".getBytes(StandardCharsets.UTF_8);
+        byte[] iv = HexUtils.subbytes(keyIdBytes, keyIdBytes.length - 16, 16);
+        CryptoParameter cryptoParameter = new CryptoParameter("SM4", "CBC", "PKCS5PADDING");
+        cryptoParameter.setIv(iv);
+        System.out.println(Arrays.toString(iv));
+        String s = CryptoUtils.symInnerDec(1, "6ZQY7Nqoklx5xtPZRShvVwkw30p3k2kW+bjwIm34fOxgy9V7q+LJPRR6gDUHbx/+", cryptoParameter);
+        System.out.println(s);
+    }
+
+    @Test
+    void testfkp2() throws DecoderException {
+        String key = "b/g0lpLTYPueubWVyHYO3cdMfiidYJ096byzzz29iFM=";
+        System.out.println(Base64.decodeBase64(key).length);
+
+        String encKey = "E99418ECDAA8925C79C6D3D945286F570930DF4A77936916F9B8F0226DF87CEC60CBD57BABE2C93D147A8035076F1FFE";
+        System.out.println(Hex.decodeHex(encKey).length);
+        System.out.println(Base64.encodeBase64String(Hex.decodeHex(encKey)));
+    }
+
+    @Test
+    void testNormalPath(){
+        String pathStr = "/./home";
+        String pathStr2 = "/opt/../home";
+        Path path = Paths.get(pathStr2).normalize();
+        System.out.println(path.toString());
     }
 }
